@@ -1,0 +1,29 @@
+{
+  "thresholds": {
+    "battery_warn_below_percent": 25.0,
+    "joint_temperature_warn_c": 50.0,
+    "joint_temperature_fail_c": 60.0,
+    "motion_min_battery_percent": 50.0,
+    "fsr_min_standing_weight_kg": 1.0,
+    "fsr_min_each_foot_kg": 0.5,
+    "fsr_standing_min_mass_fraction": 0.60,
+    "fsr_standing_max_mass_fraction": 1.40,
+    "fsr_each_foot_min_mass_fraction": 0.12,
+    "walk_min_fsr_fraction": 0.25,
+    "walk_max_tilt_rad": 0.35,
+    "joint_static_error_warn_rad": 0.08,
+    "joint_static_error_fail_rad": 0.15,
+    "joint_motion_error_fail_rad": 0.12,
+    "joint_motion_min_fraction": 0.45,
+    "camera_stddev_min": 3.0
+  },
+  "sampling": {
+    "touch_timeout_seconds": 8.0,
+    "camera_resolution": 1,
+    "camera_fps": 5
+  },
+  "motion": {
+    "joint_amplitude_rad": 0.10,
+    "walk_distance_m": 0.08
+  }
+}

@@ -1,0 +1,22 @@
+﻿test_id,label,status,summary,duration_ms,artifacts
+connection,网络与 NAOqi 连接,PASS,NAOqi 2.8.5.10 可连接，RPC 最大延迟 11.0 ms,102,
+system,机器人身份与系统,PASS,已读取机器人名称、型号配置和系统版本,295,
+services,NAOqi 服务完整性,PASS,已探测的 15 个 NAOqi 服务均可用,405,
+diagnosis,内置诊断与系统通知,FAIL,发现 3 项诊断故障,77,artifacts/diagnosis_snapshot.json
+battery,电池与供电快照,PASS,电池状态可读取，当前电量 73.0%,14,
+boards,板卡通信计数器,PASS,19 个板卡通信计数有进展，未见新增 Nack,1034,
+temperature,关节与机体温度,PASS,26 个关节的温度与状态正常,41,artifacts/joint_temperatures.json
+joints_static,关节静态数据,PASS,26 个关节的角度、命令值与刚度数据可读取,42,artifacts/joint_static_snapshot.json; artifacts/almotion_summary.txt
+imu,惯性测量单元 IMU,PASS,惯导 8 路数据完整；加速度模长 9.841，陀螺模长 0.009,1515,artifacts/imu_samples.json
+fsr,足底压力传感器 FSR,PASS,8 路足底压力数据完整，总读数 7.218,8,
+sonar,左右声纳,WARN,声纳有数据，但标靶距离/稳定性未达到建议范围,12843,artifacts/sonar_samples.json
+cameras,上下摄像头,FAIL,相机采集失败：top,3281,artifacts/camera_bottom.bmp
+audio,麦克风与扬声器,PASS,四路麦克风有数据，至少两路响应测试音，操作者确认扬声器正常,11419,artifacts/audio_energy.json
+touch,头部、双手触摸与胸键,FAIL,3/10 个传感位置未完成按下并释放响应,103264,artifacts/touch_cycles.json
+bumpers,四个脚部碰撞开关,FAIL,4/4 个传感位置未完成按下并释放响应,60885,artifacts/bumpers_cycles.json
+leds,LED 灯组,PASS,LED 指令正常，操作者确认全部灯组显示正常,17400,
+joints_motion,关节小幅主动运动,SKIP,安全前置条件不满足：内置诊断未明确通过（FAIL）,0,
+walk,站立与短距离行走,SKIP,未提供 -AllowWalk；没有执行站立或行走,0,
+temperature_after,运动后关节与机体温度,PASS,26 个关节的温度与状态正常,21,artifacts/joint_temperatures_after.json
+battery_after,测试后电池与供电快照,PASS,电池状态可读取，当前电量 70.0%,19,
+diagnosis_after,运动后诊断与系统通知,FAIL,发现 3 项诊断故障,92,artifacts/diagnosis_after_snapshot.json

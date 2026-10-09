@@ -1,0 +1,1308 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NAO 验收报告 - NAO-001</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;margin:0;background:#f4f6f8;color:#17212b}
+.wrap{max-width:1180px;margin:32px auto;padding:0 20px} .hero{background:#fff;border-radius:14px;padding:24px;box-shadow:0 4px 18px #17212b14}
+h1{margin:0 0 8px} .muted{color:#66788a;font-size:.9em} .summary{display:flex;gap:16px;flex-wrap:wrap;margin-top:18px}
+.card{padding:12px 16px;border-radius:10px;background:#eef2f5} table{width:100%;border-collapse:collapse;background:#fff;margin-top:20px;border-radius:12px;overflow:hidden}
+th,td{padding:13px 12px;border-bottom:1px solid #e7ebef;text-align:left;vertical-align:top} th{background:#eaf0f5} code{white-space:nowrap}
+.badge{font-weight:700;padding:4px 9px;border-radius:999px} .PASS{background:#d9f7e7;color:#087443} .WARN{background:#fff1c7;color:#8a5b00}
+.FAIL,.ERROR{background:#ffe0df;color:#a51d19} .SKIP{background:#e7ebef;color:#536273} details{margin-top:8px} pre{white-space:pre-wrap;max-height:500px;overflow:auto;background:#101820;color:#e8f0f5;padding:12px;border-radius:8px}
+a{color:#0068b5}
+</style></head><body><div class="wrap"><section class="hero">
+<h1>NAO 机器人维修验收报告</h1><div class="muted">编号 NAO-001 · 10.161.192.49:9559 · 2026-10-08T10:34:10 至 2026-10-08T10:40:58</div>
+<div class="summary"><div class="card"><b>总体：失败</b><br>REJECT</div><div class="card"><b>测试概况</b><br>通过 12 · 警告 1 · 失败 3</div><div class="card"><b>模式</b><br>guided</div></div>
+</section><table><thead><tr><th>项目</th><th>结果</th><th>结论与数据</th><th>耗时</th></tr></thead><tbody>
+        <tr>
+          <td><code>connection</code><br><span class="muted">网络与 NAOqi 连接</span></td>
+          <td><span class="badge PASS">通过</span></td>
+          <td>NAOqi 2.8.5.10 可连接，RPC 最大延迟 14.0 ms<br><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [], 
+  &quot;metrics&quot;: {
+    &quot;ip&quot;: &quot;10.161.192.49&quot;, 
+    &quot;naoqi_version&quot;: &quot;2.8.5.10&quot;, 
+    &quot;port&quot;: 9559, 
+    &quot;rpc_latency_ms&quot;: {
+      &quot;count&quot;: 5, 
+      &quot;max&quot;: 13.99993896484375, 
+      &quot;mean&quot;: 8.40001106262207, 
+      &quot;total&quot;: 42.00005531311035
+    }, 
+    &quot;tcp_latency_ms&quot;: 48.00009727478027
+  }
+}</pre></details></td>
+          <td>154 ms</td>
+        </tr>
+        <tr>
+          <td><code>system</code><br><span class="muted">机器人身份与系统</span></td>
+          <td><span class="badge PASS">通过</span></td>
+          <td>已读取机器人名称、型号配置和系统版本<br><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [], 
+  &quot;metrics&quot;: {
+    &quot;autonomous_life_state&quot;: &quot;solitary&quot;, 
+    &quot;disk_free&quot;: [
+      [
+        [
+          &quot;filesystem&quot;, 
+          &quot;userdata&quot;
+        ], 
+        [
+          &quot;path&quot;, 
+          &quot;/data&quot;
+        ], 
+        [
+          &quot;size&quot;, 
+          25796896
+        ], 
+        [
+          &quot;free&quot;, 
+          22800060
+        ]
+      ]
+    ], 
+    &quot;free_memory_kb&quot;: &quot;2642652&quot;, 
+    &quot;naoqi_version&quot;: &quot;2.8.5.10&quot;, 
+    &quot;robot_config&quot;: {
+      &quot;Arm Version&quot;: &quot;VERSION_50&quot;, 
+      &quot;Arms&quot;: true, 
+      &quot;Body Version&quot;: &quot;VERSION_50&quot;, 
+      &quot;Extended Arms&quot;: true, 
+      &quot;Hands&quot;: true, 
+      &quot;Head Version&quot;: &quot;VERSION_50&quot;, 
+      &quot;Laser&quot;: false, 
+      &quot;Legs&quot;: true, 
+      &quot;Model Type&quot;: &quot;naoH25&quot;, 
+      &quot;Number of Arms&quot;: 2, 
+      &quot;Number of Hands&quot;: 2, 
+      &quot;Number of Legs&quot;: 2
+    }, 
+    &quot;robot_name&quot;: &quot;nao&quot;, 
+    &quot;robot_type&quot;: &quot;Nao&quot;, 
+    &quot;timezone&quot;: &quot;Asia/Hong_Kong&quot;, 
+    &quot;total_memory_kb&quot;: &quot;3932504&quot;
+  }
+}</pre></details></td>
+          <td>284 ms</td>
+        </tr>
+        <tr>
+          <td><code>services</code><br><span class="muted">NAOqi 服务完整性</span></td>
+          <td><span class="badge PASS">通过</span></td>
+          <td>已探测的 15 个 NAOqi 服务均可用<br><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [], 
+  &quot;metrics&quot;: {
+    &quot;available&quot;: [
+      &quot;ALMemory&quot;, 
+      &quot;ALSystem&quot;, 
+      &quot;ALMotion&quot;, 
+      &quot;ALTextToSpeech&quot;, 
+      &quot;ALAudioDevice&quot;, 
+      &quot;ALAudioPlayer&quot;, 
+      &quot;ALVideoDevice&quot;, 
+      &quot;ALLeds&quot;, 
+      &quot;ALTouch&quot;, 
+      &quot;ALSonar&quot;, 
+      &quot;ALBattery&quot;, 
+      &quot;ALDiagnosis&quot;, 
+      &quot;ALRobotPosture&quot;, 
+      &quot;ALBodyTemperature&quot;, 
+      &quot;ALNotificationManager&quot;
+    ], 
+    &quot;missing&quot;: {}
+  }
+}</pre></details></td>
+          <td>549 ms</td>
+        </tr>
+        <tr>
+          <td><code>diagnosis</code><br><span class="muted">内置诊断与系统通知</span></td>
+          <td><span class="badge FAIL">失败</span></td>
+          <td>发现 3 项诊断故障<br><a href="artifacts/diagnosis_snapshot.json">artifacts/diagnosis_snapshot.json</a><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [
+    &quot;getDiagnosisStatus: severity=0.0, devices=[&#39;CameraTop&#39;]&quot;, 
+    &quot;getActiveDiagnosis: severity=0.0, devices=[&#39;CameraTop&#39;]&quot;, 
+    &quot;Diagnosis/Active 有 1 个非零诊断键&quot;
+  ], 
+  &quot;metrics&quot;: {
+    &quot;active_error_keys&quot;: {
+      &quot;Diagnosis/Active/CameraTop/Error&quot;: 1
+    }, 
+    &quot;api&quot;: {
+      &quot;getActiveDiagnosis&quot;: [
+        0, 
+        [
+          &quot;CameraTop&quot;
+        ]
+      ], 
+      &quot;getDiagnosisStatus&quot;: [
+        0, 
+        [
+          &quot;CameraTop&quot;
+        ]
+      ], 
+      &quot;getPassiveDiagnosis&quot;: []
+    }, 
+    &quot;notifications&quot;: [], 
+    &quot;temperature_error_keys&quot;: {}
+  }
+}</pre></details></td>
+          <td>73 ms</td>
+        </tr>
+        <tr>
+          <td><code>battery</code><br><span class="muted">电池与供电快照</span></td>
+          <td><span class="badge PASS">通过</span></td>
+          <td>电池状态可读取，当前电量 79.0%<br><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [
+    &quot;电量快照只能检查当前状态，不能证明电池容量和续航。&quot;
+  ], 
+  &quot;metrics&quot;: {
+    &quot;charge_percent&quot;: 79.0, 
+    &quot;getBatteryCharge&quot;: 79, 
+    &quot;memory&quot;: {
+      &quot;Device/SubDeviceList/Battery/Charge/Sensor/Status&quot;: -32708.0, 
+      &quot;Device/SubDeviceList/Battery/Charge/Sensor/Value&quot;: 0.7900000214576721, 
+      &quot;Device/SubDeviceList/Battery/Current/Sensor/Value&quot;: -1.2070000171661377, 
+      &quot;Device/SubDeviceList/Battery/Temperature/Sensor/Status&quot;: 0, 
+      &quot;Device/SubDeviceList/Battery/Temperature/Sensor/Value&quot;: 2.1000001430511475, 
+      &quot;Diagnosis/Active/Battery/Error&quot;: 0, 
+      &quot;Diagnosis/Temperature/Battery/Error&quot;: 0
+    }
+  }
+}</pre></details></td>
+          <td>11 ms</td>
+        </tr>
+        <tr>
+          <td><code>boards</code><br><span class="muted">板卡通信计数器</span></td>
+          <td><span class="badge PASS">通过</span></td>
+          <td>19 个板卡通信计数有进展，未见新增 Nack<br><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [], 
+  &quot;metrics&quot;: {
+    &quot;counters&quot;: [
+      {
+        &quot;after&quot;: 23657.0, 
+        &quot;before&quot;: 23582.0, 
+        &quot;delta&quot;: 75.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/Battery/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 0.0, 
+        &quot;before&quot;: 0.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/Battery/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 171.0, 
+        &quot;before&quot;: 171.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/Chest-Eeprom-80/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 0.0, 
+        &quot;before&quot;: 0.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/Chest-Eeprom-80/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 167.0, 
+        &quot;before&quot;: 167.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/Chest-Eeprom-81/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 0.0, 
+        &quot;before&quot;: 0.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/Chest-Eeprom-81/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 106520.0, 
+        &quot;before&quot;: 106184.0, 
+        &quot;delta&quot;: 336.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/ChestBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 49.0, 
+        &quot;before&quot;: 49.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/ChestBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 35487.0, 
+        &quot;before&quot;: 35375.0, 
+        &quot;delta&quot;: 112.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/HeadBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 4.0, 
+        &quot;before&quot;: 4.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/HeadBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 35595.0, 
+        &quot;before&quot;: 35483.0, 
+        &quot;delta&quot;: 112.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/InertialSensor/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 0.0, 
+        &quot;before&quot;: 0.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/InertialSensor/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 35490.0, 
+        &quot;before&quot;: 35378.0, 
+        &quot;delta&quot;: 112.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/LeftArmBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 0.0, 
+        &quot;before&quot;: 0.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/LeftArmBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 38264.0, 
+        &quot;before&quot;: 38145.0, 
+        &quot;delta&quot;: 119.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/LeftFootBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 2.0, 
+        &quot;before&quot;: 2.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/LeftFootBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 35487.0, 
+        &quot;before&quot;: 35375.0, 
+        &quot;delta&quot;: 112.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/LeftHandBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 3.0, 
+        &quot;before&quot;: 3.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/LeftHandBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 35490.0, 
+        &quot;before&quot;: 35378.0, 
+        &quot;delta&quot;: 112.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/LeftHipBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 0.0, 
+        &quot;before&quot;: 0.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/LeftHipBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 35486.0, 
+        &quot;before&quot;: 35374.0, 
+        &quot;delta&quot;: 112.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/LeftShinBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 4.0, 
+        &quot;before&quot;: 4.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/LeftShinBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 35488.0, 
+        &quot;before&quot;: 35376.0, 
+        &quot;delta&quot;: 112.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/LeftShoulderBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 2.0, 
+        &quot;before&quot;: 2.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/LeftShoulderBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 35478.0, 
+        &quot;before&quot;: 35366.0, 
+        &quot;delta&quot;: 112.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/LeftThighBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 12.0, 
+        &quot;before&quot;: 12.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/LeftThighBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 35489.0, 
+        &quot;before&quot;: 35377.0, 
+        &quot;delta&quot;: 112.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/RightArmBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 1.0, 
+        &quot;before&quot;: 1.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/RightArmBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 38263.0, 
+        &quot;before&quot;: 38144.0, 
+        &quot;delta&quot;: 119.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/RightFootBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 3.0, 
+        &quot;before&quot;: 3.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/RightFootBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 35488.0, 
+        &quot;before&quot;: 35376.0, 
+        &quot;delta&quot;: 112.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/RightHandBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 2.0, 
+        &quot;before&quot;: 2.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/RightHandBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 35488.0, 
+        &quot;before&quot;: 35376.0, 
+        &quot;delta&quot;: 112.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/RightHipBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 2.0, 
+        &quot;before&quot;: 2.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/RightHipBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 35489.0, 
+        &quot;before&quot;: 35377.0, 
+        &quot;delta&quot;: 112.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/RightShinBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 1.0, 
+        &quot;before&quot;: 1.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/RightShinBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 35489.0, 
+        &quot;before&quot;: 35377.0, 
+        &quot;delta&quot;: 112.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/RightShoulderBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 1.0, 
+        &quot;before&quot;: 1.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/RightShoulderBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 35478.0, 
+        &quot;before&quot;: 35366.0, 
+        &quot;delta&quot;: 112.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/RightThighBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 12.0, 
+        &quot;before&quot;: 12.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/RightThighBoard/Nack&quot;
+      }, 
+      {
+        &quot;after&quot;: 5641.0, 
+        &quot;before&quot;: 5619.0, 
+        &quot;delta&quot;: 22.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/USBoard/Ack&quot;
+      }, 
+      {
+        &quot;after&quot;: 0.0, 
+        &quot;before&quot;: 0.0, 
+        &quot;delta&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/DeviceList/USBoard/Nack&quot;
+      }
+    ]
+  }
+}</pre></details></td>
+          <td>1047 ms</td>
+        </tr>
+        <tr>
+          <td><code>temperature</code><br><span class="muted">关节与机体温度</span></td>
+          <td><span class="badge PASS">通过</span></td>
+          <td>26 个关节的温度与状态正常<br><a href="artifacts/joint_temperatures.json">artifacts/joint_temperatures.json</a><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [], 
+  &quot;metrics&quot;: {
+    &quot;body_temperature_diagnosis&quot;: null, 
+    &quot;fail_threshold_c&quot;: 60.0, 
+    &quot;joints&quot;: [
+      {
+        &quot;joint&quot;: &quot;HeadYaw&quot;, 
+        &quot;temperature_c&quot;: 38.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;HeadPitch&quot;, 
+        &quot;temperature_c&quot;: 38.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;LShoulderPitch&quot;, 
+        &quot;temperature_c&quot;: 38.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;LShoulderRoll&quot;, 
+        &quot;temperature_c&quot;: 38.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;LElbowYaw&quot;, 
+        &quot;temperature_c&quot;: 38.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;LElbowRoll&quot;, 
+        &quot;temperature_c&quot;: 38.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;LWristYaw&quot;, 
+        &quot;temperature_c&quot;: 38.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;LHand&quot;, 
+        &quot;temperature_c&quot;: 38.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;LHipYawPitch&quot;, 
+        &quot;temperature_c&quot;: 33.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;LHipRoll&quot;, 
+        &quot;temperature_c&quot;: 27.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;LHipPitch&quot;, 
+        &quot;temperature_c&quot;: 27.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;LKneePitch&quot;, 
+        &quot;temperature_c&quot;: 27.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;LAnklePitch&quot;, 
+        &quot;temperature_c&quot;: 27.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;LAnkleRoll&quot;, 
+        &quot;temperature_c&quot;: 28.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;RHipYawPitch&quot;, 
+        &quot;temperature_c&quot;: 0.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;RHipRoll&quot;, 
+        &quot;temperature_c&quot;: 28.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;RHipPitch&quot;, 
+        &quot;temperature_c&quot;: 28.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;RKneePitch&quot;, 
+        &quot;temperature_c&quot;: 28.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;RAnklePitch&quot;, 
+        &quot;temperature_c&quot;: 27.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;RAnkleRoll&quot;, 
+        &quot;temperature_c&quot;: 28.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;RShoulderPitch&quot;, 
+        &quot;temperature_c&quot;: 38.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;RShoulderRoll&quot;, 
+        &quot;temperature_c&quot;: 38.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;RElbowYaw&quot;, 
+        &quot;temperature_c&quot;: 38.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;RElbowRoll&quot;, 
+        &quot;temperature_c&quot;: 38.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;RWristYaw&quot;, 
+        &quot;temperature_c&quot;: 38.0, 
+        &quot;temperature_status&quot;: 0.0
+      }, 
+      {
+        &quot;joint&quot;: &quot;RHand&quot;, 
+        &quot;temperature_c&quot;: 38.0, 
+        &quot;temperature_status&quot;: 0.0
+      }
+    ], 
+    &quot;warn_threshold_c&quot;: 50.0
+  }
+}</pre></details></td>
+          <td>33 ms</td>
+        </tr>
+        <tr>
+          <td><code>joints_static</code><br><span class="muted">关节静态数据</span></td>
+          <td><span class="badge PASS">通过</span></td>
+          <td>26 个关节的角度、命令值与刚度数据可读取<br><a href="artifacts/joint_static_snapshot.json">artifacts/joint_static_snapshot.json</a> · <a href="artifacts/almotion_summary.txt">artifacts/almotion_summary.txt</a><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [], 
+  &quot;metrics&quot;: {
+    &quot;fail_error_rad&quot;: 0.15, 
+    &quot;joints&quot;: [
+      {
+        &quot;absolute_error&quot;: 0.009245872497558594, 
+        &quot;command&quot;: 0.0, 
+        &quot;joint&quot;: &quot;HeadYaw&quot;, 
+        &quot;sensor&quot;: -0.009245872497558594, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.011053845286369324, 
+        &quot;command&quot;: -0.17000003159046173, 
+        &quot;joint&quot;: &quot;HeadPitch&quot;, 
+        &quot;sensor&quot;: -0.18105387687683105, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.03652787208557129, 
+        &quot;command&quot;: 1.4606142044067383, 
+        &quot;joint&quot;: &quot;LShoulderPitch&quot;, 
+        &quot;sensor&quot;: 1.4971420764923096, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.02556779980659485, 
+        &quot;command&quot;: 0.21113994717597961, 
+        &quot;joint&quot;: &quot;LShoulderRoll&quot;, 
+        &quot;sensor&quot;: 0.18557214736938477, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.007072329521179199, 
+        &quot;command&quot;: -1.2082360982894897, 
+        &quot;joint&quot;: &quot;LElbowYaw&quot;, 
+        &quot;sensor&quot;: -1.2011637687683105, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.01521804928779602, 
+        &quot;command&quot;: -0.46181389689445496, 
+        &quot;joint&quot;: &quot;LElbowRoll&quot;, 
+        &quot;sensor&quot;: -0.477031946182251, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.02671891450881958, 
+        &quot;command&quot;: 0.10184293985366821, 
+        &quot;joint&quot;: &quot;LWristYaw&quot;, 
+        &quot;sensor&quot;: 0.07512402534484863, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.006709396839141846, 
+        &quot;command&quot;: 0.287109375, 
+        &quot;joint&quot;: &quot;LHand&quot;, 
+        &quot;sensor&quot;: 0.28039997816085815, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.008189678192138672, 
+        &quot;command&quot;: -0.16614961624145508, 
+        &quot;joint&quot;: &quot;LHipYawPitch&quot;, 
+        &quot;sensor&quot;: -0.1579599380493164, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.00037957727909088135, 
+        &quot;command&quot;: 0.1208484023809433, 
+        &quot;joint&quot;: &quot;LHipRoll&quot;, 
+        &quot;sensor&quot;: 0.12122797966003418, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.014187350869178772, 
+        &quot;command&quot;: 0.13925455510616302, 
+        &quot;joint&quot;: &quot;LHipPitch&quot;, 
+        &quot;sensor&quot;: 0.1534419059753418, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.0015298500657081604, 
+        &quot;command&quot;: -0.09207788854837418, 
+        &quot;joint&quot;: &quot;LKneePitch&quot;, 
+        &quot;sensor&quot;: -0.09054803848266602, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.002295941114425659, 
+        &quot;command&quot;: 0.0835559070110321, 
+        &quot;joint&quot;: &quot;LAnklePitch&quot;, 
+        &quot;sensor&quot;: 0.08125996589660645, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.0034291744232177734, 
+        &quot;command&quot;: -0.1131129264831543, 
+        &quot;joint&quot;: &quot;LAnkleRoll&quot;, 
+        &quot;sensor&quot;: -0.11654210090637207, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.008189678192138672, 
+        &quot;command&quot;: -0.16614961624145508, 
+        &quot;joint&quot;: &quot;RHipYawPitch&quot;, 
+        &quot;sensor&quot;: -0.1579599380493164, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.015073888003826141, 
+        &quot;command&quot;: -0.10707198828458786, 
+        &quot;joint&quot;: &quot;RHipRoll&quot;, 
+        &quot;sensor&quot;: -0.09199810028076172, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.007281854748725891, 
+        &quot;command&quot;: 0.13687221705913544, 
+        &quot;joint&quot;: &quot;RHipPitch&quot;, 
+        &quot;sensor&quot;: 0.14415407180786133, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.005625277757644653, 
+        &quot;command&quot;: -0.08995321393013, 
+        &quot;joint&quot;: &quot;RKneePitch&quot;, 
+        &quot;sensor&quot;: -0.08432793617248535, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.0010578036308288574, 
+        &quot;command&quot;: 0.0839356780052185, 
+        &quot;joint&quot;: &quot;RAnklePitch&quot;, 
+        &quot;sensor&quot;: 0.08287787437438965, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.00483095645904541, 
+        &quot;command&quot;: 0.10151493549346924, 
+        &quot;joint&quot;: &quot;RAnkleRoll&quot;, 
+        &quot;sensor&quot;: 0.09668397903442383, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.03544974327087402, 
+        &quot;command&quot;: 1.4433681964874268, 
+        &quot;joint&quot;: &quot;RShoulderPitch&quot;, 
+        &quot;sensor&quot;: 1.4788179397583008, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.024227991700172424, 
+        &quot;command&quot;: -0.2083500772714615, 
+        &quot;joint&quot;: &quot;RShoulderRoll&quot;, 
+        &quot;sensor&quot;: -0.18412208557128906, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.018019795417785645, 
+        &quot;command&quot;: 1.2229442596435547, 
+        &quot;joint&quot;: &quot;RElbowYaw&quot;, 
+        &quot;sensor&quot;: 1.2409640550613403, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.007682383060455322, 
+        &quot;command&quot;: 0.4265063405036926, 
+        &quot;joint&quot;: &quot;RElbowRoll&quot;, 
+        &quot;sensor&quot;: 0.4188239574432373, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.016292497515678406, 
+        &quot;command&quot;: 0.11098749935626984, 
+        &quot;joint&quot;: &quot;RWristYaw&quot;, 
+        &quot;sensor&quot;: 0.12727999687194824, 
+        &quot;stiffness&quot;: 1.0
+      }, 
+      {
+        &quot;absolute_error&quot;: 0.006407201290130615, 
+        &quot;command&quot;: 0.3007928133010864, 
+        &quot;joint&quot;: &quot;RHand&quot;, 
+        &quot;sensor&quot;: 0.30720001459121704, 
+        &quot;stiffness&quot;: 1.0
+      }
+    ], 
+    &quot;warn_error_rad&quot;: 0.08
+  }
+}</pre></details></td>
+          <td>40 ms</td>
+        </tr>
+        <tr>
+          <td><code>imu</code><br><span class="muted">惯性测量单元 IMU</span></td>
+          <td><span class="badge PASS">通过</span></td>
+          <td>惯导 8 路数据完整；加速度模长 9.855，陀螺模长 0.010<br><a href="artifacts/imu_samples.json">artifacts/imu_samples.json</a><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [], 
+  &quot;metrics&quot;: {
+    &quot;AccX&quot;: {
+      &quot;count&quot;: 20, 
+      &quot;max&quot;: -0.268242210149765, 
+      &quot;mean&quot;: -0.3223696440458298, 
+      &quot;min&quot;: -0.43110352754592896, 
+      &quot;stddev&quot;: 0.05837365387421787
+    }, 
+    &quot;AccY&quot;: {
+      &quot;count&quot;: 20, 
+      &quot;max&quot;: -0.09580078721046448, 
+      &quot;mean&quot;: -0.19208057299256326, 
+      &quot;min&quot;: -0.2490820437669754, 
+      &quot;stddev&quot;: 0.055899983832048646
+    }, 
+    &quot;AccZ&quot;: {
+      &quot;count&quot;: 20, 
+      &quot;max&quot;: -9.8100004196167, 
+      &quot;mean&quot;: -9.848320627212525, 
+      &quot;min&quot;: -9.896221160888672, 
+      &quot;stddev&quot;: 0.03519953511656711
+    }, 
+    &quot;AngleX&quot;: {
+      &quot;count&quot;: 20, 
+      &quot;max&quot;: 0.004793818574398756, 
+      &quot;mean&quot;: -0.00280892055016011, 
+      &quot;min&quot;: -0.009012047201395035, 
+      &quot;stddev&quot;: 0.0048182679011771635
+    }, 
+    &quot;AngleY&quot;: {
+      &quot;count&quot;: 20, 
+      &quot;max&quot;: -0.033747848123311996, 
+      &quot;mean&quot;: -0.038436158746480945, 
+      &quot;min&quot;: -0.0425683818757534, 
+      &quot;stddev&quot;: 0.0028930787472302
+    }, 
+    &quot;GyrX&quot;: {
+      &quot;count&quot;: 20, 
+      &quot;max&quot;: 0.0023968450259417295, 
+      &quot;mean&quot;: -0.007230482262093574, 
+      &quot;min&quot;: -0.011451592668890953, 
+      &quot;stddev&quot;: 0.003443905994681879
+    }, 
+    &quot;GyrY&quot;: {
+      &quot;count&quot;: 20, 
+      &quot;max&quot;: 0.009321063756942749, 
+      &quot;mean&quot;: 0.0005193163175135851, 
+      &quot;min&quot;: -0.008788431994616985, 
+      &quot;stddev&quot;: 0.006190045331862307
+    }, 
+    &quot;GyrZ&quot;: {
+      &quot;count&quot;: 20, 
+      &quot;max&quot;: -0.0018642127979546785, 
+      &quot;mean&quot;: -0.0065114289172925055, 
+      &quot;min&quot;: -0.011717909015715122, 
+      &quot;stddev&quot;: 0.004149299888297936
+    }, 
+    &quot;acceleration_norm&quot;: 9.855467330893198, 
+    &quot;gyro_norm&quot;: 0.00974414027634243, 
+    &quot;resolved_keys&quot;: {
+      &quot;AccX&quot;: &quot;Device/SubDeviceList/InertialSensor/AccelerometerX/Sensor/Value&quot;, 
+      &quot;AccY&quot;: &quot;Device/SubDeviceList/InertialSensor/AccelerometerY/Sensor/Value&quot;, 
+      &quot;AccZ&quot;: &quot;Device/SubDeviceList/InertialSensor/AccelerometerZ/Sensor/Value&quot;, 
+      &quot;AngleX&quot;: &quot;Device/SubDeviceList/InertialSensor/AngleX/Sensor/Value&quot;, 
+      &quot;AngleY&quot;: &quot;Device/SubDeviceList/InertialSensor/AngleY/Sensor/Value&quot;, 
+      &quot;GyrX&quot;: &quot;Device/SubDeviceList/InertialSensor/GyroscopeX/Sensor/Value&quot;, 
+      &quot;GyrY&quot;: &quot;Device/SubDeviceList/InertialSensor/GyroscopeY/Sensor/Value&quot;, 
+      &quot;GyrZ&quot;: &quot;Device/SubDeviceList/InertialSensor/GyroscopeZ/Sensor/Value&quot;
+    }
+  }
+}</pre></details></td>
+          <td>1427 ms</td>
+        </tr>
+        <tr>
+          <td><code>fsr</code><br><span class="muted">足底压力传感器 FSR</span></td>
+          <td><span class="badge PASS">通过</span></td>
+          <td>8 路足底压力数据完整，总读数 7.657<br><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [
+    &quot;机器人未承重时 FSR 接近零是正常现象；站立承重与重心响应仍需人工/姿态测试。&quot;
+  ], 
+  &quot;metrics&quot;: {
+    &quot;firmware_totals_and_center_of_pressure&quot;: {
+      &quot;Device/SubDeviceList/LFoot/FSR/CenterOfPressure/X/Sensor/Value&quot;: -0.016504786908626556, 
+      &quot;Device/SubDeviceList/LFoot/FSR/CenterOfPressure/Y/Sensor/Value&quot;: -0.0196011271327734, 
+      &quot;Device/SubDeviceList/LFoot/FSR/TotalWeight/Sensor/Value&quot;: 3.6359376907348633, 
+      &quot;Device/SubDeviceList/RFoot/FSR/CenterOfPressure/X/Sensor/Value&quot;: -0.0035738691221922636, 
+      &quot;Device/SubDeviceList/RFoot/FSR/CenterOfPressure/Y/Sensor/Value&quot;: 0.02012859657406807, 
+      &quot;Device/SubDeviceList/RFoot/FSR/TotalWeight/Sensor/Value&quot;: 4.021209239959717
+    }, 
+    &quot;left_total&quot;: 3.6359377776971087, 
+    &quot;readings&quot;: {
+      &quot;LFoot/FrontLeft&quot;: 0.0, 
+      &quot;LFoot/FrontRight&quot;: 0.4784415066242218, 
+      &quot;LFoot/RearLeft&quot;: 0.001871404587291181, 
+      &quot;LFoot/RearRight&quot;: 3.1556248664855957, 
+      &quot;RFoot/FrontLeft&quot;: 1.0673500299453735, 
+      &quot;RFoot/FrontRight&quot;: 0.0, 
+      &quot;RFoot/RearLeft&quot;: 2.951140880584717, 
+      &quot;RFoot/RearRight&quot;: 0.002718427451327443
+    }, 
+    &quot;right_total&quot;: 4.021209337981418, 
+    &quot;total&quot;: 7.6571471156785265
+  }
+}</pre></details></td>
+          <td>65 ms</td>
+        </tr>
+        <tr>
+          <td><code>sonar</code><br><span class="muted">左右声纳</span></td>
+          <td><span class="badge WARN">警告</span></td>
+          <td>声纳有数据，但标靶距离/稳定性未达到建议范围<br><a href="artifacts/sonar_samples.json">artifacts/sonar_samples.json</a><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [], 
+  &quot;metrics&quot;: {
+    &quot;left&quot;: {
+      &quot;count&quot;: 10, 
+      &quot;max&quot;: 1.1399999856948853, 
+      &quot;mean&quot;: 0.9269999861717224, 
+      &quot;min&quot;: 0.5799999833106995, 
+      &quot;stddev&quot;: 0.25183527357068103
+    }, 
+    &quot;right&quot;: {
+      &quot;count&quot;: 10, 
+      &quot;max&quot;: 0.6699999570846558, 
+      &quot;mean&quot;: 0.5589999914169311, 
+      &quot;min&quot;: 0.5, 
+      &quot;stddev&quot;: 0.0605722562177198
+    }
+  }
+}</pre></details></td>
+          <td>98425 ms</td>
+        </tr>
+        <tr>
+          <td><code>cameras</code><br><span class="muted">上下摄像头</span></td>
+          <td><span class="badge FAIL">失败</span></td>
+          <td>相机采集失败：top<br><a href="artifacts/camera_bottom.bmp">artifacts/camera_bottom.bmp</a><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [
+    &quot;top: 相机返回的数据结构无效&quot;, 
+    &quot;自动指标不能判断虚焦、污渍和坏点，请在 HTML 报告中打开两张 BMP 人工确认。&quot;
+  ], 
+  &quot;metrics&quot;: {
+    &quot;bottom&quot;: {
+      &quot;artifact&quot;: &quot;artifacts/camera_bottom.bmp&quot;, 
+      &quot;bright_fraction&quot;: 0.0020689655172413794, 
+      &quot;camera_index&quot;: 1, 
+      &quot;color_space&quot;: 11, 
+      &quot;dark_fraction&quot;: 0.14344827586206896, 
+      &quot;frame_count&quot;: 3, 
+      &quot;height&quot;: 240, 
+      &quot;layers&quot;: 3, 
+      &quot;mean&quot;: 83.83162620689653, 
+      &quot;mean_sampled_frame_difference&quot;: 22.995642701525053, 
+      &quot;sample_pixels&quot;: 1450, 
+      &quot;stddev&quot;: 52.761799565107225, 
+      &quot;timestamp_microseconds&quot;: 487371, 
+      &quot;timestamp_seconds&quot;: 561, 
+      &quot;timestamps&quot;: [
+        [
+          560, 
+          87581
+        ], 
+        [
+          560, 
+          820788
+        ], 
+        [
+          561, 
+          487371
+        ]
+      ], 
+      &quot;timestamps_changed&quot;: true, 
+      &quot;width&quot;: 320
+    }, 
+    &quot;errors&quot;: {
+      &quot;top&quot;: &quot;相机返回的数据结构无效&quot;
+    }
+  }
+}</pre></details></td>
+          <td>4413 ms</td>
+        </tr>
+        <tr>
+          <td><code>audio</code><br><span class="muted">麦克风与扬声器</span></td>
+          <td><span class="badge PASS">通过</span></td>
+          <td>四路麦克风有数据，至少两路响应测试音，操作者确认扬声器正常<br><a href="artifacts/audio_energy.json">artifacts/audio_energy.json</a><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [
+    &quot;机器人自身回录只能作通路筛查；严格验收需外部标准声源和录音分析。&quot;
+  ], 
+  &quot;metrics&quot;: {
+    &quot;baseline&quot;: {
+      &quot;front&quot;: {
+        &quot;count&quot;: 7, 
+        &quot;max&quot;: 259.03045654296875, 
+        &quot;mean&quot;: 155.45100729806083, 
+        &quot;min&quot;: 125.66320037841797, 
+        &quot;stddev&quot;: 43.895258917274816
+      }, 
+      &quot;left&quot;: {
+        &quot;count&quot;: 7, 
+        &quot;max&quot;: 263.3415832519531, 
+        &quot;mean&quot;: 148.56403023856026, 
+        &quot;min&quot;: 113.10497283935547, 
+        &quot;stddev&quot;: 47.826791333206046
+      }, 
+      &quot;rear&quot;: {
+        &quot;count&quot;: 7, 
+        &quot;max&quot;: 213.88006591796875, 
+        &quot;mean&quot;: 147.99229431152344, 
+        &quot;min&quot;: 106.8793716430664, 
+        &quot;stddev&quot;: 42.371212404759355
+      }, 
+      &quot;right&quot;: {
+        &quot;count&quot;: 7, 
+        &quot;max&quot;: 455.6090087890625, 
+        &quot;mean&quot;: 358.78167724609375, 
+        &quot;min&quot;: 303.75665283203125, 
+        &quot;stddev&quot;: 44.967318469295456
+      }
+    }, 
+    &quot;channels&quot;: {
+      &quot;front&quot;: {
+        &quot;ratio&quot;: 4.321395962021275, 
+        &quot;rise&quot;: 860.3427124023438
+      }, 
+      &quot;left&quot;: {
+        &quot;ratio&quot;: 3.714004243973672, 
+        &quot;rise&quot;: 714.7101745605469
+      }, 
+      &quot;rear&quot;: {
+        &quot;ratio&quot;: 3.414679937937527, 
+        &quot;rise&quot;: 516.451904296875
+      }, 
+      &quot;right&quot;: {
+        &quot;ratio&quot;: 3.165987425077344, 
+        &quot;rise&quot;: 986.8433837890625
+      }
+    }, 
+    &quot;during_1khz_tone&quot;: {
+      &quot;front&quot;: {
+        &quot;count&quot;: 14, 
+        &quot;max&quot;: 1119.3731689453125, 
+        &quot;mean&quot;: 475.71573747907365, 
+        &quot;min&quot;: 139.31063842773438, 
+        &quot;stddev&quot;: 318.6095781262213
+      }, 
+      &quot;left&quot;: {
+        &quot;count&quot;: 14, 
+        &quot;max&quot;: 978.0517578125, 
+        &quot;mean&quot;: 448.9457359313965, 
+        &quot;min&quot;: 118.47956085205078, 
+        &quot;stddev&quot;: 283.8216930174503
+      }, 
+      &quot;rear&quot;: {
+        &quot;count&quot;: 14, 
+        &quot;max&quot;: 730.3319702148438, 
+        &quot;mean&quot;: 409.4721472603934, 
+        &quot;min&quot;: 133.7501983642578, 
+        &quot;stddev&quot;: 242.00946169908042
+      }, 
+      &quot;right&quot;: {
+        &quot;count&quot;: 14, 
+        &quot;max&quot;: 1442.452392578125, 
+        &quot;mean&quot;: 671.7434801374163, 
+        &quot;min&quot;: 269.1060791015625, 
+        &quot;stddev&quot;: 294.37668587534813
+      }
+    }, 
+    &quot;operator_heard_clean_tone&quot;: true, 
+    &quot;tone_source&quot;: &quot;ALAudioDevice&quot;
+  }
+}</pre></details></td>
+          <td>36435 ms</td>
+        </tr>
+        <tr>
+          <td><code>touch</code><br><span class="muted">头部、双手触摸与胸键</span></td>
+          <td><span class="badge FAIL">失败</span></td>
+          <td>6/10 个传感位置未完成按下并释放响应<br><a href="artifacts/touch_cycles.json">artifacts/touch_cycles.json</a><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [], 
+  &quot;metrics&quot;: {
+    &quot;sensors&quot;: [
+      {
+        &quot;initial&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/SubDeviceList/Head/Touch/Front/Sensor/Value&quot;, 
+        &quot;label&quot;: &quot;头顶前部触摸&quot;, 
+        &quot;peak&quot;: 0.0, 
+        &quot;sensor&quot;: &quot;Head/Touch/Front&quot;, 
+        &quot;status&quot;: &quot;timeout&quot;
+      }, 
+      {
+        &quot;activation_seconds&quot;: 7.124000072479248, 
+        &quot;final&quot;: 1.0, 
+        &quot;initial&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/SubDeviceList/Head/Touch/Middle/Sensor/Value&quot;, 
+        &quot;label&quot;: &quot;头顶中部触摸&quot;, 
+        &quot;peak&quot;: 1.0, 
+        &quot;sensor&quot;: &quot;Head/Touch/Middle&quot;, 
+        &quot;status&quot;: &quot;no_release&quot;
+      }, 
+      {
+        &quot;initial&quot;: 1.0, 
+        &quot;key&quot;: &quot;Device/SubDeviceList/Head/Touch/Rear/Sensor/Value&quot;, 
+        &quot;label&quot;: &quot;头顶后部触摸&quot;, 
+        &quot;peak&quot;: 1.0, 
+        &quot;sensor&quot;: &quot;Head/Touch/Rear&quot;, 
+        &quot;status&quot;: &quot;stuck_high&quot;
+      }, 
+      {
+        &quot;activation_seconds&quot;: 0.24199986457824707, 
+        &quot;final&quot;: 1.0, 
+        &quot;initial&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/SubDeviceList/LHand/Touch/Back/Sensor/Value&quot;, 
+        &quot;label&quot;: &quot;左手背触摸&quot;, 
+        &quot;peak&quot;: 1.0, 
+        &quot;sensor&quot;: &quot;LHand/Touch/Back&quot;, 
+        &quot;status&quot;: &quot;no_release&quot;
+      }, 
+      {
+        &quot;initial&quot;: 1.0, 
+        &quot;key&quot;: &quot;Device/SubDeviceList/LHand/Touch/Left/Sensor/Value&quot;, 
+        &quot;label&quot;: &quot;左手左侧触摸&quot;, 
+        &quot;peak&quot;: 1.0, 
+        &quot;sensor&quot;: &quot;LHand/Touch/Left&quot;, 
+        &quot;status&quot;: &quot;stuck_high&quot;
+      }, 
+      {
+        &quot;activation_seconds&quot;: 0.6100001335144043, 
+        &quot;final&quot;: 0.0, 
+        &quot;initial&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/SubDeviceList/LHand/Touch/Right/Sensor/Value&quot;, 
+        &quot;label&quot;: &quot;左手右侧触摸&quot;, 
+        &quot;peak&quot;: 1.0, 
+        &quot;sensor&quot;: &quot;LHand/Touch/Right&quot;, 
+        &quot;status&quot;: &quot;passed&quot;
+      }, 
+      {
+        &quot;activation_seconds&quot;: 3.81499981880188, 
+        &quot;final&quot;: 0.0, 
+        &quot;initial&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/SubDeviceList/RHand/Touch/Back/Sensor/Value&quot;, 
+        &quot;label&quot;: &quot;右手背触摸&quot;, 
+        &quot;peak&quot;: 1.0, 
+        &quot;sensor&quot;: &quot;RHand/Touch/Back&quot;, 
+        &quot;status&quot;: &quot;passed&quot;
+      }, 
+      {
+        &quot;activation_seconds&quot;: 0.4499998092651367, 
+        &quot;final&quot;: 0.0, 
+        &quot;initial&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/SubDeviceList/RHand/Touch/Left/Sensor/Value&quot;, 
+        &quot;label&quot;: &quot;右手左侧触摸&quot;, 
+        &quot;peak&quot;: 1.0, 
+        &quot;sensor&quot;: &quot;RHand/Touch/Left&quot;, 
+        &quot;status&quot;: &quot;passed&quot;
+      }, 
+      {
+        &quot;initial&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/SubDeviceList/RHand/Touch/Right/Sensor/Value&quot;, 
+        &quot;label&quot;: &quot;右手右侧触摸&quot;, 
+        &quot;peak&quot;: 0.0, 
+        &quot;sensor&quot;: &quot;RHand/Touch/Right&quot;, 
+        &quot;status&quot;: &quot;timeout&quot;
+      }, 
+      {
+        &quot;activation_seconds&quot;: 0.0840001106262207, 
+        &quot;final&quot;: 0.0, 
+        &quot;initial&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/SubDeviceList/ChestBoard/Button/Sensor/Value&quot;, 
+        &quot;label&quot;: &quot;胸口按钮（短按后立即松开）&quot;, 
+        &quot;peak&quot;: 1.0, 
+        &quot;sensor&quot;: &quot;ChestBoard/Button&quot;, 
+        &quot;status&quot;: &quot;passed&quot;
+      }
+    ], 
+    &quot;timeout_seconds&quot;: 8.0
+  }
+}</pre></details></td>
+          <td>130923 ms</td>
+        </tr>
+        <tr>
+          <td><code>bumpers</code><br><span class="muted">四个脚部碰撞开关</span></td>
+          <td><span class="badge PASS">通过</span></td>
+          <td>4 个传感位置均检测到 0→1→0 响应<br><a href="artifacts/bumpers_cycles.json">artifacts/bumpers_cycles.json</a><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [], 
+  &quot;metrics&quot;: {
+    &quot;sensors&quot;: [
+      {
+        &quot;activation_seconds&quot;: 0.5570001602172852, 
+        &quot;final&quot;: 0.0, 
+        &quot;initial&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/SubDeviceList/LFoot/Bumper/Left/Sensor/Value&quot;, 
+        &quot;label&quot;: &quot;左脚左侧碰撞开关&quot;, 
+        &quot;peak&quot;: 1.0, 
+        &quot;sensor&quot;: &quot;LFoot/Bumper/Left&quot;, 
+        &quot;status&quot;: &quot;passed&quot;
+      }, 
+      {
+        &quot;activation_seconds&quot;: 7.460000038146973, 
+        &quot;final&quot;: 0.0, 
+        &quot;initial&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/SubDeviceList/LFoot/Bumper/Right/Sensor/Value&quot;, 
+        &quot;label&quot;: &quot;左脚右侧碰撞开关&quot;, 
+        &quot;peak&quot;: 1.0, 
+        &quot;sensor&quot;: &quot;LFoot/Bumper/Right&quot;, 
+        &quot;status&quot;: &quot;passed&quot;
+      }, 
+      {
+        &quot;activation_seconds&quot;: 3.442999839782715, 
+        &quot;final&quot;: 0.0, 
+        &quot;initial&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/SubDeviceList/RFoot/Bumper/Left/Sensor/Value&quot;, 
+        &quot;label&quot;: &quot;右脚左侧碰撞开关&quot;, 
+        &quot;peak&quot;: 1.0, 
+        &quot;sensor&quot;: &quot;RFoot/Bumper/Left&quot;, 
+        &quot;status&quot;: &quot;passed&quot;
+      }, 
+      {
+        &quot;activation_seconds&quot;: 0.4140000343322754, 
+        &quot;final&quot;: 0.0, 
+        &quot;initial&quot;: 0.0, 
+        &quot;key&quot;: &quot;Device/SubDeviceList/RFoot/Bumper/Right/Sensor/Value&quot;, 
+        &quot;label&quot;: &quot;右脚右侧碰撞开关&quot;, 
+        &quot;peak&quot;: 1.0, 
+        &quot;sensor&quot;: &quot;RFoot/Bumper/Right&quot;, 
+        &quot;status&quot;: &quot;passed&quot;
+      }
+    ], 
+    &quot;timeout_seconds&quot;: 8.0
+  }
+}</pre></details></td>
+          <td>53769 ms</td>
+        </tr>
+        <tr>
+          <td><code>leds</code><br><span class="muted">LED 灯组</span></td>
+          <td><span class="badge PASS">通过</span></td>
+          <td>LED 指令正常，操作者确认全部灯组显示正常<br><details><summary>数据明细</summary><pre>{
+  &quot;details&quot;: [], 
+  &quot;metrics&quot;: {
+    &quot;api_errors&quot;: [], 
+    &quot;available_groups&quot;: [
+      &quot;AllLeds&quot;, 
+      &quot;AllLedsBlue&quot;, 
+      &quot;AllLedsGreen&quot;, 
+      &quot;AllLedsRed&quot;, 
+      &quot;BrainLeds&quot;, 
+      &quot;BrainLedsBack&quot;, 
+      &quot;BrainLedsFront&quot;, 
+      &quot;BrainLedsLeft&quot;, 
+      &quot;BrainLedsMiddle&quot;, 
+      &quot;BrainLedsRight&quot;, 
+      &quot;ChestLeds&quot;, 
+      &quot;EarLed1&quot;, 
+      &quot;EarLed10&quot;, 
+      &quot;EarLed2&quot;, 
+      &quot;EarLed3&quot;, 
+      &quot;EarLed4&quot;, 
+      &quot;EarLed5&quot;, 
+      &quot;EarLed6&quot;, 
+      &quot;EarLed7&quot;, 
+      &quot;EarLed8&quot;, 
+      &quot;EarLed9&quot;, 
+      &quot;EarLeds&quot;, 
+      &quot;FaceLed0&quot;, 
+      &quot;FaceLed1&quot;, 
+      &quot;FaceLed2&quot;, 
+      &quot;FaceLed3&quot;, 
+      &quot;FaceLed4&quot;, 
+      &quot;FaceLed5&quot;, 
+      &quot;FaceLed6&quot;, 
+      &quot;FaceLed7&quot;, 
+      &quot;FaceLedLeft0&quot;, 
+      &quot;FaceLedLeft1&quot;, 
+      &quot;FaceLedLeft2&quot;, 
+      &quot;FaceLedLeft3&quot;, 
+      &quot;FaceLedLeft4&quot;, 
+      &quot;FaceLedLeft5&quot;, 
+      &quot;FaceLedLeft6&quot;, 
+      &quot;FaceLedLeft7&quot;, 
+      &quot;FaceLedRight0&quot;, 
+      &quot;FaceLedRight1&quot;, 
+      &quot;FaceLedRight2&quot;, 
+      &quot;FaceLedRight3&quot;, 
+      &quot;FaceLedRight4&quot;, 
+      &quot;FaceLedRight5&quot;, 
+      &quot;FaceLedRight6&quot;, 
+      &quot;FaceLedRight7&quot;, 
+      &quot;FaceLeds&quot;, 
+      &quot;FaceLedsBottom&quot;, 
+      &quot;FaceLedsExternal&quot;, 
+      &quot;FaceLedsInternal&quot;, 
+      &quot;FaceLedsLeftBottom&quot;, 
+      &quot;FaceLedsLeftExternal&quot;, 
+      &quot;FaceLedsLeftInternal&quot;, 
+      &quot;FaceLedsLeftTop&quot;, 
+      &quot;FaceLedsRightBottom&quot;, 
+      &quot;FaceLedsRightExternal&quot;, 
+      &quot;FaceLedsRightInternal&quot;, 
+      &quot;FaceLedsRightTop&quot;, 
+      &quot;FaceLedsTop&quot;, 
+      &quot;FeetLeds&quot;, 
+      &quot;LeftEarLeds&quot;, 
+      &quot;LeftEarLedsBack&quot;, 
+      &quot;LeftEarLedsEven&quot;, 
+      &quot;LeftEarLedsFront&quot;, 
+      &quot;LeftEarLedsOdd&quot;, 
+      &quot;LeftFaceLeds&quot;, 
+      &quot;LeftFaceLedsBlue&quot;, 
+      &quot;LeftFaceLedsGreen&quot;, 
+      &quot;LeftFaceLedsRed&quot;, 
+      &quot;LeftFootLeds&quot;, 
+      &quot;RightEarLeds&quot;, 
+      &quot;RightEarLedsBack&quot;, 
+      &quot;RightEarLedsEven&quot;, 
+      &quot;RightEarLedsFront&quot;, 
+      &quot;RightEarLedsOdd&quot;, 
+      &quot;RightFaceLeds&quot;, 
+      &quot;RightFaceLedsBlue&quot;, 
+      &quot;RightFaceLedsGreen&quot;, 
+      &quot;RightFaceLedsRed&quot;, 
+      &quot;RightFootLeds&quot;, 
+      &quot;duringsleep-faceleds&quot;, 
+      &quot;sleep-faceLeds&quot;, 
+      &quot;sleep-semiFaceLeds&quot;
+    ], 
+    &quot;operator_visual_confirmation&quot;: true
+  }
+}</pre></details></td>
+          <td>32431 ms</td>
+        </tr></tbody></table>
+<p class="muted">本报告是工程验收辅助结果，不替代厂家维修认证。WARN/SKIP 项必须人工复核。</p></div></body></html>

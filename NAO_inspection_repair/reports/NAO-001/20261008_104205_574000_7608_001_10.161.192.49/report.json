@@ -1,0 +1,1661 @@
+{
+  "config": {
+    "logging": {
+      "max_samples_per_severity": 30, 
+      "remote_tail_lines": 3000.0
+    }, 
+    "motion": {
+      "duration_seconds": 0.9, 
+      "hand_amplitude": 0.15, 
+      "joint_amplitude_rad": 0.1, 
+      "limit_margin_rad": 0.15, 
+      "stiffness": 0.35, 
+      "walk_distance_m": 0.08, 
+      "walk_speed_fraction": 0.25
+    }, 
+    "sampling": {
+      "audio_interval_seconds": 0.08, 
+      "audio_samples": 14, 
+      "camera_color_space": 11, 
+      "camera_fps": 5.0, 
+      "camera_resolution": 1, 
+      "imu_interval_seconds": 0.05, 
+      "imu_samples": 20, 
+      "sonar_interval_seconds": 0.1, 
+      "sonar_samples": 10, 
+      "touch_timeout_seconds": 8.0
+    }, 
+    "thresholds": {
+      "audio_min_energy_rise": 150.0, 
+      "audio_min_ratio": 1.35, 
+      "battery_warn_below_percent": 25.0, 
+      "board_observation_seconds": 1.0, 
+      "camera_mean_max": 250.0, 
+      "camera_mean_min": 5.0, 
+      "camera_stddev_min": 3.0, 
+      "fsr_each_foot_min_mass_fraction": 0.12, 
+      "fsr_min_each_foot_kg": 0.5, 
+      "fsr_min_standing_weight_kg": 1.0, 
+      "fsr_standing_max_mass_fraction": 1.4, 
+      "fsr_standing_min_mass_fraction": 0.6, 
+      "joint_motion_error_fail_rad": 0.12, 
+      "joint_motion_min_fraction": 0.45, 
+      "joint_static_error_fail_rad": 0.15, 
+      "joint_static_error_warn_rad": 0.08, 
+      "joint_temperature_fail_c": 60.0, 
+      "joint_temperature_warn_c": 50.0, 
+      "motion_min_battery_percent": 50.0, 
+      "sonar_max_m": 2.55, 
+      "sonar_min_m": 0.15, 
+      "walk_max_tilt_rad": 0.35, 
+      "walk_min_fsr_fraction": 0.25
+    }
+  }, 
+  "finished_at": "2026-10-08T10:46:31", 
+  "overall_status": "FAIL", 
+  "profile": "full", 
+  "results": [
+    {
+      "artifacts": [], 
+      "details": [], 
+      "duration_ms": 102, 
+      "id": "connection", 
+      "label": "网络与 NAOqi 连接", 
+      "metrics": {
+        "ip": "10.161.192.49", 
+        "naoqi_version": "2.8.5.10", 
+        "port": 9559, 
+        "rpc_latency_ms": {
+          "count": 5, 
+          "max": 10.999917984008789, 
+          "mean": 7.000017166137695, 
+          "total": 35.00008583068848
+        }, 
+        "tcp_latency_ms": 9.999990463256836
+      }, 
+      "started_at": "2026-10-08T10:42:05", 
+      "status": "PASS", 
+      "summary": "NAOqi 2.8.5.10 可连接，RPC 最大延迟 11.0 ms"
+    }, 
+    {
+      "artifacts": [], 
+      "details": [], 
+      "duration_ms": 295, 
+      "id": "system", 
+      "label": "机器人身份与系统", 
+      "metrics": {
+        "autonomous_life_state": "solitary", 
+        "disk_free": [
+          [
+            [
+              "filesystem", 
+              "userdata"
+            ], 
+            [
+              "path", 
+              "/data"
+            ], 
+            [
+              "size", 
+              25796896
+            ], 
+            [
+              "free", 
+              22798576
+            ]
+          ]
+        ], 
+        "free_memory_kb": "2484008", 
+        "naoqi_version": "2.8.5.10", 
+        "robot_config": {
+          "Arm Version": "VERSION_50", 
+          "Arms": true, 
+          "Body Version": "VERSION_50", 
+          "Extended Arms": true, 
+          "Hands": true, 
+          "Head Version": "VERSION_50", 
+          "Laser": false, 
+          "Legs": true, 
+          "Model Type": "naoH25", 
+          "Number of Arms": 2, 
+          "Number of Hands": 2, 
+          "Number of Legs": 2
+        }, 
+        "robot_name": "nao", 
+        "robot_type": "Nao", 
+        "timezone": "Asia/Hong_Kong", 
+        "total_memory_kb": "3932504"
+      }, 
+      "started_at": "2026-10-08T10:42:09", 
+      "status": "PASS", 
+      "summary": "已读取机器人名称、型号配置和系统版本"
+    }, 
+    {
+      "artifacts": [], 
+      "details": [], 
+      "duration_ms": 405, 
+      "id": "services", 
+      "label": "NAOqi 服务完整性", 
+      "metrics": {
+        "available": [
+          "ALMemory", 
+          "ALSystem", 
+          "ALMotion", 
+          "ALTextToSpeech", 
+          "ALAudioDevice", 
+          "ALAudioPlayer", 
+          "ALVideoDevice", 
+          "ALLeds", 
+          "ALTouch", 
+          "ALSonar", 
+          "ALBattery", 
+          "ALDiagnosis", 
+          "ALRobotPosture", 
+          "ALBodyTemperature", 
+          "ALNotificationManager"
+        ], 
+        "missing": {}
+      }, 
+      "started_at": "2026-10-08T10:42:13", 
+      "status": "PASS", 
+      "summary": "已探测的 15 个 NAOqi 服务均可用"
+    }, 
+    {
+      "artifacts": [
+        "artifacts/diagnosis_snapshot.json"
+      ], 
+      "details": [
+        "getDiagnosisStatus: severity=0.0, devices=['CameraTop']", 
+        "getActiveDiagnosis: severity=0.0, devices=['CameraTop']", 
+        "Diagnosis/Active 有 1 个非零诊断键"
+      ], 
+      "duration_ms": 77, 
+      "id": "diagnosis", 
+      "label": "内置诊断与系统通知", 
+      "metrics": {
+        "active_error_keys": {
+          "Diagnosis/Active/CameraTop/Error": 1
+        }, 
+        "api": {
+          "getActiveDiagnosis": [
+            0, 
+            [
+              "CameraTop"
+            ]
+          ], 
+          "getDiagnosisStatus": [
+            0, 
+            [
+              "CameraTop"
+            ]
+          ], 
+          "getPassiveDiagnosis": []
+        }, 
+        "notifications": [], 
+        "temperature_error_keys": {}
+      }, 
+      "started_at": "2026-10-08T10:42:17", 
+      "status": "FAIL", 
+      "summary": "发现 3 项诊断故障"
+    }, 
+    {
+      "artifacts": [], 
+      "details": [
+        "电量快照只能检查当前状态，不能证明电池容量和续航。"
+      ], 
+      "duration_ms": 14, 
+      "id": "battery", 
+      "label": "电池与供电快照", 
+      "metrics": {
+        "charge_percent": 73.0, 
+        "getBatteryCharge": 73, 
+        "memory": {
+          "Device/SubDeviceList/Battery/Charge/Sensor/Status": -32708.0, 
+          "Device/SubDeviceList/Battery/Charge/Sensor/Value": 0.7300000190734863, 
+          "Device/SubDeviceList/Battery/Current/Sensor/Value": -1.0810000896453857, 
+          "Device/SubDeviceList/Battery/Temperature/Sensor/Status": 0, 
+          "Device/SubDeviceList/Battery/Temperature/Sensor/Value": 2.299999952316284, 
+          "Diagnosis/Active/Battery/Error": 0, 
+          "Diagnosis/Temperature/Battery/Error": 0
+        }
+      }, 
+      "started_at": "2026-10-08T10:42:17", 
+      "status": "PASS", 
+      "summary": "电池状态可读取，当前电量 73.0%"
+    }, 
+    {
+      "artifacts": [], 
+      "details": [], 
+      "duration_ms": 1034, 
+      "id": "boards", 
+      "label": "板卡通信计数器", 
+      "metrics": {
+        "counters": [
+          {
+            "after": 50014.0, 
+            "before": 49958.0, 
+            "delta": 56.0, 
+            "key": "Device/DeviceList/Battery/Ack"
+          }, 
+          {
+            "after": 0.0, 
+            "before": 0.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/Battery/Nack"
+          }, 
+          {
+            "after": 331.0, 
+            "before": 331.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/Chest-Eeprom-80/Ack"
+          }, 
+          {
+            "after": 0.0, 
+            "before": 0.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/Chest-Eeprom-80/Nack"
+          }, 
+          {
+            "after": 329.0, 
+            "before": 329.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/Chest-Eeprom-81/Ack"
+          }, 
+          {
+            "after": 0.0, 
+            "before": 0.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/Chest-Eeprom-81/Nack"
+          }, 
+          {
+            "after": 225128.0, 
+            "before": 224876.0, 
+            "delta": 252.0, 
+            "key": "Device/DeviceList/ChestBoard/Ack"
+          }, 
+          {
+            "after": 49.0, 
+            "before": 49.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/ChestBoard/Nack"
+          }, 
+          {
+            "after": 75023.0, 
+            "before": 74939.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/HeadBoard/Ack"
+          }, 
+          {
+            "after": 4.0, 
+            "before": 4.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/HeadBoard/Nack"
+          }, 
+          {
+            "after": 75131.0, 
+            "before": 75047.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/InertialSensor/Ack"
+          }, 
+          {
+            "after": 0.0, 
+            "before": 0.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/InertialSensor/Nack"
+          }, 
+          {
+            "after": 75026.0, 
+            "before": 74942.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/LeftArmBoard/Ack"
+          }, 
+          {
+            "after": 0.0, 
+            "before": 0.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/LeftArmBoard/Nack"
+          }, 
+          {
+            "after": 78601.0, 
+            "before": 78517.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/LeftFootBoard/Ack"
+          }, 
+          {
+            "after": 2.0, 
+            "before": 2.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/LeftFootBoard/Nack"
+          }, 
+          {
+            "after": 75023.0, 
+            "before": 74939.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/LeftHandBoard/Ack"
+          }, 
+          {
+            "after": 3.0, 
+            "before": 3.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/LeftHandBoard/Nack"
+          }, 
+          {
+            "after": 75026.0, 
+            "before": 74942.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/LeftHipBoard/Ack"
+          }, 
+          {
+            "after": 0.0, 
+            "before": 0.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/LeftHipBoard/Nack"
+          }, 
+          {
+            "after": 75022.0, 
+            "before": 74938.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/LeftShinBoard/Ack"
+          }, 
+          {
+            "after": 4.0, 
+            "before": 4.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/LeftShinBoard/Nack"
+          }, 
+          {
+            "after": 75024.0, 
+            "before": 74940.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/LeftShoulderBoard/Ack"
+          }, 
+          {
+            "after": 2.0, 
+            "before": 2.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/LeftShoulderBoard/Nack"
+          }, 
+          {
+            "after": 75014.0, 
+            "before": 74930.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/LeftThighBoard/Ack"
+          }, 
+          {
+            "after": 12.0, 
+            "before": 12.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/LeftThighBoard/Nack"
+          }, 
+          {
+            "after": 75025.0, 
+            "before": 74941.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/RightArmBoard/Ack"
+          }, 
+          {
+            "after": 1.0, 
+            "before": 1.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/RightArmBoard/Nack"
+          }, 
+          {
+            "after": 78600.0, 
+            "before": 78516.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/RightFootBoard/Ack"
+          }, 
+          {
+            "after": 3.0, 
+            "before": 3.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/RightFootBoard/Nack"
+          }, 
+          {
+            "after": 75024.0, 
+            "before": 74940.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/RightHandBoard/Ack"
+          }, 
+          {
+            "after": 2.0, 
+            "before": 2.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/RightHandBoard/Nack"
+          }, 
+          {
+            "after": 75024.0, 
+            "before": 74940.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/RightHipBoard/Ack"
+          }, 
+          {
+            "after": 2.0, 
+            "before": 2.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/RightHipBoard/Nack"
+          }, 
+          {
+            "after": 75025.0, 
+            "before": 74941.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/RightShinBoard/Ack"
+          }, 
+          {
+            "after": 1.0, 
+            "before": 1.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/RightShinBoard/Nack"
+          }, 
+          {
+            "after": 75025.0, 
+            "before": 74941.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/RightShoulderBoard/Ack"
+          }, 
+          {
+            "after": 1.0, 
+            "before": 1.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/RightShoulderBoard/Nack"
+          }, 
+          {
+            "after": 75014.0, 
+            "before": 74930.0, 
+            "delta": 84.0, 
+            "key": "Device/DeviceList/RightThighBoard/Ack"
+          }, 
+          {
+            "after": 12.0, 
+            "before": 12.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/RightThighBoard/Nack"
+          }, 
+          {
+            "after": 13549.0, 
+            "before": 13532.0, 
+            "delta": 17.0, 
+            "key": "Device/DeviceList/USBoard/Ack"
+          }, 
+          {
+            "after": 0.0, 
+            "before": 0.0, 
+            "delta": 0.0, 
+            "key": "Device/DeviceList/USBoard/Nack"
+          }
+        ]
+      }, 
+      "started_at": "2026-10-08T10:42:21", 
+      "status": "PASS", 
+      "summary": "19 个板卡通信计数有进展，未见新增 Nack"
+    }, 
+    {
+      "artifacts": [
+        "artifacts/joint_temperatures.json"
+      ], 
+      "details": [], 
+      "duration_ms": 41, 
+      "id": "temperature", 
+      "label": "关节与机体温度", 
+      "metrics": {
+        "body_temperature_diagnosis": null, 
+        "fail_threshold_c": 60.0, 
+        "joints": [
+          {
+            "joint": "HeadYaw", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "HeadPitch", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LShoulderPitch", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LShoulderRoll", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LElbowYaw", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LElbowRoll", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LWristYaw", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LHand", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LHipYawPitch", 
+            "temperature_c": 33.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LHipRoll", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LHipPitch", 
+            "temperature_c": 27.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LKneePitch", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LAnklePitch", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LAnkleRoll", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RHipYawPitch", 
+            "temperature_c": 0.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RHipRoll", 
+            "temperature_c": 32.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RHipPitch", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RKneePitch", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RAnklePitch", 
+            "temperature_c": 27.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RAnkleRoll", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RShoulderPitch", 
+            "temperature_c": 40.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RShoulderRoll", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RElbowYaw", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RElbowRoll", 
+            "temperature_c": 40.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RWristYaw", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RHand", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }
+        ], 
+        "warn_threshold_c": 50.0
+      }, 
+      "started_at": "2026-10-08T10:42:25", 
+      "status": "PASS", 
+      "summary": "26 个关节的温度与状态正常"
+    }, 
+    {
+      "artifacts": [
+        "artifacts/joint_static_snapshot.json", 
+        "artifacts/almotion_summary.txt"
+      ], 
+      "details": [], 
+      "duration_ms": 42, 
+      "id": "joints_static", 
+      "label": "关节静态数据", 
+      "metrics": {
+        "fail_error_rad": 0.15, 
+        "joints": [
+          {
+            "absolute_error": 0.005794405937194824, 
+            "command": -0.3724623918533325, 
+            "joint": "HeadYaw", 
+            "sensor": -0.3666679859161377, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.008219458162784576, 
+            "command": 0.02198360115289688, 
+            "joint": "HeadPitch", 
+            "sensor": 0.013764142990112305, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.03509390354156494, 
+            "command": 1.4497761726379395, 
+            "joint": "LShoulderPitch", 
+            "sensor": 1.4848700761795044, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.025875374674797058, 
+            "command": 0.21758346259593964, 
+            "joint": "LShoulderRoll", 
+            "sensor": 0.19170808792114258, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.005424618721008301, 
+            "command": -1.2050544023513794, 
+            "joint": "LElbowYaw", 
+            "sensor": -1.199629783630371, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.01178857684135437, 
+            "command": -0.43763139843940735, 
+            "joint": "LElbowRoll", 
+            "sensor": -0.4494199752807617, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.00652197003364563, 
+            "command": 0.10081598162651062, 
+            "joint": "LWristYaw", 
+            "sensor": 0.10733795166015625, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.0068243443965911865, 
+            "command": 0.29642435908317566, 
+            "joint": "LHand", 
+            "sensor": 0.2896000146865845, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.00740736722946167, 
+            "command": -0.16996949911117554, 
+            "joint": "LHipYawPitch", 
+            "sensor": -0.16256213188171387, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.002417527139186859, 
+            "command": 0.11904355138540268, 
+            "joint": "LHipRoll", 
+            "sensor": 0.11662602424621582, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.016750171780586243, 
+            "command": 0.12748782336711884, 
+            "joint": "LHipPitch", 
+            "sensor": 0.14423799514770508, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.00024423748254776, 
+            "command": -0.09232626110315323, 
+            "joint": "LKneePitch", 
+            "sensor": -0.09208202362060547, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.0046212151646614075, 
+            "command": 0.0874151661992073, 
+            "joint": "LAnklePitch", 
+            "sensor": 0.0827939510345459, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.00043785572052001953, 
+            "command": -0.11084377765655518, 
+            "joint": "LAnkleRoll", 
+            "sensor": -0.11040592193603516, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.00740736722946167, 
+            "command": -0.16996949911117554, 
+            "joint": "RHipYawPitch", 
+            "sensor": -0.16256213188171387, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.013147801160812378, 
+            "command": -0.11895176768302917, 
+            "joint": "RHipRoll", 
+            "sensor": -0.1058039665222168, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.01054614782333374, 
+            "command": 0.12747198343276978, 
+            "joint": "RHipPitch", 
+            "sensor": 0.13801813125610352, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.006450004875659943, 
+            "command": -0.09231216460466385, 
+            "joint": "RKneePitch", 
+            "sensor": -0.0858621597290039, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.0014715567231178284, 
+            "command": 0.08741763979196548, 
+            "joint": "RAnklePitch", 
+            "sensor": 0.08594608306884766, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.012548521161079407, 
+            "command": 0.11076648533344269, 
+            "joint": "RAnkleRoll", 
+            "sensor": 0.09821796417236328, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.03681313991546631, 
+            "command": 1.440470814704895, 
+            "joint": "RShoulderPitch", 
+            "sensor": 1.4772839546203613, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.02587336301803589, 
+            "command": -0.21919935941696167, 
+            "joint": "RShoulderRoll", 
+            "sensor": -0.19332599639892578, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.014661431312561035, 
+            "command": 1.2063606977462769, 
+            "joint": "RElbowYaw", 
+            "sensor": 1.221022129058838, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.006102889776229858, 
+            "command": 0.4203248918056488, 
+            "joint": "RElbowRoll", 
+            "sensor": 0.41422200202941895, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.01913876086473465, 
+            "command": 0.10200529545545578, 
+            "joint": "RWristYaw", 
+            "sensor": 0.12114405632019043, 
+            "stiffness": 1.0
+          }, 
+          {
+            "absolute_error": 0.007199972867965698, 
+            "command": 0.30000004172325134, 
+            "joint": "RHand", 
+            "sensor": 0.30720001459121704, 
+            "stiffness": 1.0
+          }
+        ], 
+        "warn_error_rad": 0.08
+      }, 
+      "started_at": "2026-10-08T10:42:28", 
+      "status": "PASS", 
+      "summary": "26 个关节的角度、命令值与刚度数据可读取"
+    }, 
+    {
+      "artifacts": [
+        "artifacts/imu_samples.json"
+      ], 
+      "details": [], 
+      "duration_ms": 1515, 
+      "id": "imu", 
+      "label": "惯性测量单元 IMU", 
+      "metrics": {
+        "AccX": {
+          "count": 20, 
+          "max": -0.41194337606430054, 
+          "mean": -0.8713081419467926, 
+          "min": -1.4082715511322021, 
+          "stddev": 0.33236763866671626
+        }, 
+        "AccY": {
+          "count": 20, 
+          "max": -0.028740234673023224, 
+          "mean": -0.11879297457635403, 
+          "min": -0.16286133229732513, 
+          "stddev": 0.04697170279347684
+        }, 
+        "AccZ": {
+          "count": 20, 
+          "max": -9.742939949035645, 
+          "mean": -9.801378393173218, 
+          "min": -9.857900619506836, 
+          "stddev": 0.04283261206092551
+        }, 
+        "AngleX": {
+          "count": 20, 
+          "max": -0.00805312767624855, 
+          "mean": -0.012540117651224137, 
+          "min": -0.016873661428689957, 
+          "stddev": 0.003224782683211839
+        }, 
+        "AngleY": {
+          "count": 20, 
+          "max": -0.05177229270339012, 
+          "mean": -0.09012160804122686, 
+          "min": -0.1190754696726799, 
+          "stddev": 0.021767960585542683
+        }, 
+        "GyrX": {
+          "count": 20, 
+          "max": -0.0013315805699676275, 
+          "mean": -0.0058989018201828, 
+          "min": -0.012516857124865055, 
+          "stddev": 0.003796546073151991
+        }, 
+        "GyrY": {
+          "count": 20, 
+          "max": 0.1227717250585556, 
+          "mean": -0.007084008725360036, 
+          "min": -0.13209278881549835, 
+          "stddev": 0.08635775186351366
+        }, 
+        "GyrZ": {
+          "count": 20, 
+          "max": 0.0023968450259417295, 
+          "mean": -0.0005060006165876985, 
+          "min": -0.007456851191818714, 
+          "stddev": 0.0037264276897575497
+        }, 
+        "acceleration_norm": 9.840747332148828, 
+        "gyro_norm": 0.009232348505614387, 
+        "resolved_keys": {
+          "AccX": "Device/SubDeviceList/InertialSensor/AccelerometerX/Sensor/Value", 
+          "AccY": "Device/SubDeviceList/InertialSensor/AccelerometerY/Sensor/Value", 
+          "AccZ": "Device/SubDeviceList/InertialSensor/AccelerometerZ/Sensor/Value", 
+          "AngleX": "Device/SubDeviceList/InertialSensor/AngleX/Sensor/Value", 
+          "AngleY": "Device/SubDeviceList/InertialSensor/AngleY/Sensor/Value", 
+          "GyrX": "Device/SubDeviceList/InertialSensor/GyroscopeX/Sensor/Value", 
+          "GyrY": "Device/SubDeviceList/InertialSensor/GyroscopeY/Sensor/Value", 
+          "GyrZ": "Device/SubDeviceList/InertialSensor/GyroscopeZ/Sensor/Value"
+        }
+      }, 
+      "started_at": "2026-10-08T10:42:32", 
+      "status": "PASS", 
+      "summary": "惯导 8 路数据完整；加速度模长 9.841，陀螺模长 0.009"
+    }, 
+    {
+      "artifacts": [], 
+      "details": [
+        "机器人未承重时 FSR 接近零是正常现象；站立承重与重心响应仍需人工/姿态测试。"
+      ], 
+      "duration_ms": 8, 
+      "id": "fsr", 
+      "label": "足底压力传感器 FSR", 
+      "metrics": {
+        "firmware_totals_and_center_of_pressure": {
+          "Device/SubDeviceList/LFoot/FSR/CenterOfPressure/X/Sensor/Value": -0.025746023282408714, 
+          "Device/SubDeviceList/LFoot/FSR/CenterOfPressure/Y/Sensor/Value": 0.013769662007689476, 
+          "Device/SubDeviceList/LFoot/FSR/TotalWeight/Sensor/Value": 3.6049180030822754, 
+          "Device/SubDeviceList/RFoot/FSR/CenterOfPressure/X/Sensor/Value": -0.008514778688549995, 
+          "Device/SubDeviceList/RFoot/FSR/CenterOfPressure/Y/Sensor/Value": -0.0022602612152695656, 
+          "Device/SubDeviceList/RFoot/FSR/TotalWeight/Sensor/Value": 3.6132359504699707
+        }, 
+        "left_total": 3.6049179285764694, 
+        "readings": {
+          "LFoot/FrontLeft": 0.0, 
+          "LFoot/FrontRight": 0.15547601878643036, 
+          "LFoot/RearLeft": 2.4309048652648926, 
+          "LFoot/RearRight": 1.0185370445251465, 
+          "RFoot/FrontLeft": 0.5356298685073853, 
+          "RFoot/FrontRight": 0.23756143450737, 
+          "RFoot/RearLeft": 1.458785891532898, 
+          "RFoot/RearRight": 1.3812586069107056
+        }, 
+        "right_total": 3.6132358014583588, 
+        "total": 7.218153730034828
+      }, 
+      "started_at": "2026-10-08T10:42:37", 
+      "status": "PASS", 
+      "summary": "8 路足底压力数据完整，总读数 7.218"
+    }, 
+    {
+      "artifacts": [
+        "artifacts/sonar_samples.json"
+      ], 
+      "details": [], 
+      "duration_ms": 12843, 
+      "id": "sonar", 
+      "label": "左右声纳", 
+      "metrics": {
+        "left": {
+          "count": 10, 
+          "max": 1.149999976158142, 
+          "mean": 0.7899999737739563, 
+          "min": 0.5399999618530273, 
+          "stddev": 0.22135942490260135
+        }, 
+        "right": {
+          "count": 10, 
+          "max": 1.1200000047683716, 
+          "mean": 0.8069999933242797, 
+          "min": 0.5099999904632568, 
+          "stddev": 0.2056720715685354
+        }
+      }, 
+      "started_at": "2026-10-08T10:42:41", 
+      "status": "WARN", 
+      "summary": "声纳有数据，但标靶距离/稳定性未达到建议范围"
+    }, 
+    {
+      "artifacts": [
+        "artifacts/camera_bottom.bmp"
+      ], 
+      "details": [
+        "top: 相机返回的数据结构无效", 
+        "自动指标不能判断虚焦、污渍和坏点，请在 HTML 报告中打开两张 BMP 人工确认。"
+      ], 
+      "duration_ms": 3281, 
+      "id": "cameras", 
+      "label": "上下摄像头", 
+      "metrics": {
+        "bottom": {
+          "artifact": "artifacts/camera_bottom.bmp", 
+          "bright_fraction": 0.0, 
+          "camera_index": 1, 
+          "color_space": 11, 
+          "dark_fraction": 0.001379310344827586, 
+          "frame_count": 3, 
+          "height": 240, 
+          "layers": 3, 
+          "mean": 110.42009517241395, 
+          "mean_sampled_frame_difference": 15.764705882352942, 
+          "sample_pixels": 1450, 
+          "stddev": 28.959378940364587, 
+          "timestamp_microseconds": 939448, 
+          "timestamp_seconds": 949, 
+          "timestamps": [
+            [
+              948, 
+              939881
+            ], 
+            [
+              949, 
+              472989
+            ], 
+            [
+              949, 
+              939448
+            ]
+          ], 
+          "timestamps_changed": true, 
+          "width": 320
+        }, 
+        "errors": {
+          "top": "相机返回的数据结构无效"
+        }
+      }, 
+      "started_at": "2026-10-08T10:42:54", 
+      "status": "FAIL", 
+      "summary": "相机采集失败：top"
+    }, 
+    {
+      "artifacts": [
+        "artifacts/audio_energy.json"
+      ], 
+      "details": [
+        "机器人自身回录只能作通路筛查；严格验收需外部标准声源和录音分析。"
+      ], 
+      "duration_ms": 11419, 
+      "id": "audio", 
+      "label": "麦克风与扬声器", 
+      "metrics": {
+        "baseline": {
+          "front": {
+            "count": 7, 
+            "max": 256.2046813964844, 
+            "mean": 155.12975202287947, 
+            "min": 125.208984375, 
+            "stddev": 42.94985848730495
+          }, 
+          "left": {
+            "count": 7, 
+            "max": 221.4349822998047, 
+            "mean": 163.8971219744001, 
+            "min": 117.53668975830078, 
+            "stddev": 40.99010892513521
+          }, 
+          "rear": {
+            "count": 7, 
+            "max": 215.4349365234375, 
+            "mean": 169.0971439906529, 
+            "min": 126.1517333984375, 
+            "stddev": 33.12102065917951
+          }, 
+          "right": {
+            "count": 7, 
+            "max": 831.9760131835938, 
+            "mean": 536.1003505161831, 
+            "min": 357.21319580078125, 
+            "stddev": 179.16194510618357
+          }
+        }, 
+        "channels": {
+          "front": {
+            "ratio": 1.9058234265182425, 
+            "rise": 232.07620239257812
+          }, 
+          "left": {
+            "ratio": 2.0407439021171707, 
+            "rise": 230.4571075439453
+          }, 
+          "rear": {
+            "ratio": 2.7189645197901458, 
+            "rise": 370.32501220703125
+          }, 
+          "right": {
+            "ratio": 0.7938456154843027, 
+            "rise": -171.5155029296875
+          }
+        }, 
+        "during_1khz_tone": {
+          "front": {
+            "count": 14, 
+            "max": 488.2808837890625, 
+            "mean": 437.9306847708566, 
+            "min": 122.62040710449219, 
+            "stddev": 100.72941957915796
+          }, 
+          "left": {
+            "count": 14, 
+            "max": 451.89208984375, 
+            "mean": 403.63385282244, 
+            "min": 119.2377700805664, 
+            "stddev": 90.2766537282756
+          }, 
+          "rear": {
+            "count": 14, 
+            "max": 585.7599487304688, 
+            "mean": 529.4503424508231, 
+            "min": 146.7572784423828, 
+            "stddev": 123.81314905901768
+          }, 
+          "right": {
+            "count": 14, 
+            "max": 660.4605102539062, 
+            "mean": 545.5737195696149, 
+            "min": 361.99835205078125, 
+            "stddev": 84.92360261511874
+          }
+        }, 
+        "operator_heard_clean_tone": true, 
+        "tone_source": "ALAudioDevice"
+      }, 
+      "started_at": "2026-10-08T10:42:57", 
+      "status": "PASS", 
+      "summary": "四路麦克风有数据，至少两路响应测试音，操作者确认扬声器正常"
+    }, 
+    {
+      "artifacts": [
+        "artifacts/touch_cycles.json"
+      ], 
+      "details": [], 
+      "duration_ms": 103264, 
+      "id": "touch", 
+      "label": "头部、双手触摸与胸键", 
+      "metrics": {
+        "sensors": [
+          {
+            "activation_seconds": 0.3470001220703125, 
+            "final": 0.0, 
+            "initial": 0.0, 
+            "key": "Device/SubDeviceList/Head/Touch/Front/Sensor/Value", 
+            "label": "头顶前部触摸", 
+            "peak": 1.0, 
+            "sensor": "Head/Touch/Front", 
+            "status": "passed"
+          }, 
+          {
+            "activation_seconds": 3.3529999256134033, 
+            "final": 0.0, 
+            "initial": 0.0, 
+            "key": "Device/SubDeviceList/Head/Touch/Middle/Sensor/Value", 
+            "label": "头顶中部触摸", 
+            "peak": 1.0, 
+            "sensor": "Head/Touch/Middle", 
+            "status": "passed"
+          }, 
+          {
+            "activation_seconds": 2.061000108718872, 
+            "final": 0.0, 
+            "initial": 0.0, 
+            "key": "Device/SubDeviceList/Head/Touch/Rear/Sensor/Value", 
+            "label": "头顶后部触摸", 
+            "peak": 1.0, 
+            "sensor": "Head/Touch/Rear", 
+            "status": "passed"
+          }, 
+          {
+            "activation_seconds": 3.866999864578247, 
+            "final": 0.0, 
+            "initial": 0.0, 
+            "key": "Device/SubDeviceList/LHand/Touch/Back/Sensor/Value", 
+            "label": "左手背触摸", 
+            "peak": 1.0, 
+            "sensor": "LHand/Touch/Back", 
+            "status": "passed"
+          }, 
+          {
+            "initial": 0.0, 
+            "key": "Device/SubDeviceList/LHand/Touch/Left/Sensor/Value", 
+            "label": "左手左侧触摸", 
+            "peak": 0.0, 
+            "sensor": "LHand/Touch/Left", 
+            "status": "timeout"
+          }, 
+          {
+            "activation_seconds": 0.4200000762939453, 
+            "final": 0.0, 
+            "initial": 0.0, 
+            "key": "Device/SubDeviceList/LHand/Touch/Right/Sensor/Value", 
+            "label": "左手右侧触摸", 
+            "peak": 1.0, 
+            "sensor": "LHand/Touch/Right", 
+            "status": "passed"
+          }, 
+          {
+            "activation_seconds": 3.9159998893737793, 
+            "final": 0.0, 
+            "initial": 0.0, 
+            "key": "Device/SubDeviceList/RHand/Touch/Back/Sensor/Value", 
+            "label": "右手背触摸", 
+            "peak": 1.0, 
+            "sensor": "RHand/Touch/Back", 
+            "status": "passed"
+          }, 
+          {
+            "activation_seconds": 3.169999837875366, 
+            "final": 0.0, 
+            "initial": 0.0, 
+            "key": "Device/SubDeviceList/RHand/Touch/Left/Sensor/Value", 
+            "label": "右手左侧触摸", 
+            "peak": 1.0, 
+            "sensor": "RHand/Touch/Left", 
+            "status": "passed"
+          }, 
+          {
+            "initial": 0.0, 
+            "key": "Device/SubDeviceList/RHand/Touch/Right/Sensor/Value", 
+            "label": "右手右侧触摸", 
+            "peak": 1.0, 
+            "sensor": "RHand/Touch/Right", 
+            "status": "timeout"
+          }, 
+          {
+            "initial": 1.0, 
+            "key": "Device/SubDeviceList/ChestBoard/Button/Sensor/Value", 
+            "label": "胸口按钮（短按后立即松开）", 
+            "peak": 1.0, 
+            "sensor": "ChestBoard/Button", 
+            "status": "stuck_high"
+          }
+        ], 
+        "timeout_seconds": 8.0
+      }, 
+      "started_at": "2026-10-08T10:43:12", 
+      "status": "FAIL", 
+      "summary": "3/10 个传感位置未完成按下并释放响应"
+    }, 
+    {
+      "artifacts": [
+        "artifacts/bumpers_cycles.json"
+      ], 
+      "details": [], 
+      "duration_ms": 60885, 
+      "id": "bumpers", 
+      "label": "四个脚部碰撞开关", 
+      "metrics": {
+        "sensors": [
+          {
+            "initial": 0.0, 
+            "key": "Device/SubDeviceList/LFoot/Bumper/Left/Sensor/Value", 
+            "label": "左脚左侧碰撞开关", 
+            "peak": 0.0, 
+            "sensor": "LFoot/Bumper/Left", 
+            "status": "timeout"
+          }, 
+          {
+            "initial": 0.0, 
+            "key": "Device/SubDeviceList/LFoot/Bumper/Right/Sensor/Value", 
+            "label": "左脚右侧碰撞开关", 
+            "peak": 0.0, 
+            "sensor": "LFoot/Bumper/Right", 
+            "status": "timeout"
+          }, 
+          {
+            "initial": 0.0, 
+            "key": "Device/SubDeviceList/RFoot/Bumper/Left/Sensor/Value", 
+            "label": "右脚左侧碰撞开关", 
+            "peak": 0.0, 
+            "sensor": "RFoot/Bumper/Left", 
+            "status": "timeout"
+          }, 
+          {
+            "initial": 0.0, 
+            "key": "Device/SubDeviceList/RFoot/Bumper/Right/Sensor/Value", 
+            "label": "右脚右侧碰撞开关", 
+            "peak": 0.0, 
+            "sensor": "RFoot/Bumper/Right", 
+            "status": "timeout"
+          }
+        ], 
+        "timeout_seconds": 8.0
+      }, 
+      "started_at": "2026-10-08T10:44:56", 
+      "status": "FAIL", 
+      "summary": "4/4 个传感位置未完成按下并释放响应"
+    }, 
+    {
+      "artifacts": [], 
+      "details": [], 
+      "duration_ms": 17400, 
+      "id": "leds", 
+      "label": "LED 灯组", 
+      "metrics": {
+        "api_errors": [], 
+        "available_groups": [
+          "AllLeds", 
+          "AllLedsBlue", 
+          "AllLedsGreen", 
+          "AllLedsRed", 
+          "BrainLeds", 
+          "BrainLedsBack", 
+          "BrainLedsFront", 
+          "BrainLedsLeft", 
+          "BrainLedsMiddle", 
+          "BrainLedsRight", 
+          "ChestLeds", 
+          "EarLed1", 
+          "EarLed10", 
+          "EarLed2", 
+          "EarLed3", 
+          "EarLed4", 
+          "EarLed5", 
+          "EarLed6", 
+          "EarLed7", 
+          "EarLed8", 
+          "EarLed9", 
+          "EarLeds", 
+          "FaceLed0", 
+          "FaceLed1", 
+          "FaceLed2", 
+          "FaceLed3", 
+          "FaceLed4", 
+          "FaceLed5", 
+          "FaceLed6", 
+          "FaceLed7", 
+          "FaceLedLeft0", 
+          "FaceLedLeft1", 
+          "FaceLedLeft2", 
+          "FaceLedLeft3", 
+          "FaceLedLeft4", 
+          "FaceLedLeft5", 
+          "FaceLedLeft6", 
+          "FaceLedLeft7", 
+          "FaceLedRight0", 
+          "FaceLedRight1", 
+          "FaceLedRight2", 
+          "FaceLedRight3", 
+          "FaceLedRight4", 
+          "FaceLedRight5", 
+          "FaceLedRight6", 
+          "FaceLedRight7", 
+          "FaceLeds", 
+          "FaceLedsBottom", 
+          "FaceLedsExternal", 
+          "FaceLedsInternal", 
+          "FaceLedsLeftBottom", 
+          "FaceLedsLeftExternal", 
+          "FaceLedsLeftInternal", 
+          "FaceLedsLeftTop", 
+          "FaceLedsRightBottom", 
+          "FaceLedsRightExternal", 
+          "FaceLedsRightInternal", 
+          "FaceLedsRightTop", 
+          "FaceLedsTop", 
+          "FeetLeds", 
+          "LeftEarLeds", 
+          "LeftEarLedsBack", 
+          "LeftEarLedsEven", 
+          "LeftEarLedsFront", 
+          "LeftEarLedsOdd", 
+          "LeftFaceLeds", 
+          "LeftFaceLedsBlue", 
+          "LeftFaceLedsGreen", 
+          "LeftFaceLedsRed", 
+          "LeftFootLeds", 
+          "RightEarLeds", 
+          "RightEarLedsBack", 
+          "RightEarLedsEven", 
+          "RightEarLedsFront", 
+          "RightEarLedsOdd", 
+          "RightFaceLeds", 
+          "RightFaceLedsBlue", 
+          "RightFaceLedsGreen", 
+          "RightFaceLedsRed", 
+          "RightFootLeds", 
+          "duringsleep-faceleds", 
+          "sleep-faceLeds", 
+          "sleep-semiFaceLeds"
+        ], 
+        "operator_visual_confirmation": true
+      }, 
+      "started_at": "2026-10-08T10:45:56", 
+      "status": "PASS", 
+      "summary": "LED 指令正常，操作者确认全部灯组显示正常"
+    }, 
+    {
+      "artifacts": [], 
+      "details": [
+        "内置诊断未明确通过（FAIL）"
+      ], 
+      "duration_ms": 0, 
+      "id": "joints_motion", 
+      "label": "关节小幅主动运动", 
+      "metrics": {}, 
+      "started_at": "2026-10-08T10:46:17", 
+      "status": "SKIP", 
+      "summary": "安全前置条件不满足：内置诊断未明确通过（FAIL）"
+    }, 
+    {
+      "artifacts": [], 
+      "details": [], 
+      "duration_ms": 0, 
+      "id": "walk", 
+      "label": "站立与短距离行走", 
+      "metrics": {}, 
+      "started_at": "2026-10-08T10:46:17", 
+      "status": "SKIP", 
+      "summary": "未提供 -AllowWalk；没有执行站立或行走"
+    }, 
+    {
+      "artifacts": [
+        "artifacts/joint_temperatures_after.json"
+      ], 
+      "details": [], 
+      "duration_ms": 21, 
+      "id": "temperature_after", 
+      "label": "运动后关节与机体温度", 
+      "metrics": {
+        "body_temperature_diagnosis": null, 
+        "fail_threshold_c": 60.0, 
+        "joints": [
+          {
+            "joint": "HeadYaw", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "HeadPitch", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LShoulderPitch", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LShoulderRoll", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LElbowYaw", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LElbowRoll", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LWristYaw", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LHand", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LHipYawPitch", 
+            "temperature_c": 33.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LHipRoll", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LHipPitch", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LKneePitch", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LAnklePitch", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "LAnkleRoll", 
+            "temperature_c": 27.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RHipYawPitch", 
+            "temperature_c": 0.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RHipRoll", 
+            "temperature_c": 34.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RHipPitch", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RKneePitch", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RAnklePitch", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RAnkleRoll", 
+            "temperature_c": 28.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RShoulderPitch", 
+            "temperature_c": 40.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RShoulderRoll", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RElbowYaw", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RElbowRoll", 
+            "temperature_c": 40.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RWristYaw", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }, 
+          {
+            "joint": "RHand", 
+            "temperature_c": 38.0, 
+            "temperature_status": 0.0
+          }
+        ], 
+        "warn_threshold_c": 50.0
+      }, 
+      "started_at": "2026-10-08T10:46:17", 
+      "status": "PASS", 
+      "summary": "26 个关节的温度与状态正常"
+    }, 
+    {
+      "artifacts": [], 
+      "details": [
+        "电量快照只能检查当前状态，不能证明电池容量和续航。"
+      ], 
+      "duration_ms": 19, 
+      "id": "battery_after", 
+      "label": "测试后电池与供电快照", 
+      "metrics": {
+        "charge_delta_percent": -3.0, 
+        "charge_percent": 70.0, 
+        "getBatteryCharge": 70, 
+        "memory": {
+          "Device/SubDeviceList/Battery/Charge/Sensor/Status": -32708.0, 
+          "Device/SubDeviceList/Battery/Charge/Sensor/Value": 0.699999988079071, 
+          "Device/SubDeviceList/Battery/Current/Sensor/Value": -1.2480000257492065, 
+          "Device/SubDeviceList/Battery/Temperature/Sensor/Status": 0, 
+          "Device/SubDeviceList/Battery/Temperature/Sensor/Value": 2.4000000953674316, 
+          "Diagnosis/Active/Battery/Error": 0, 
+          "Diagnosis/Temperature/Battery/Error": 0
+        }, 
+        "start_charge_percent": 73.0
+      }, 
+      "started_at": "2026-10-08T10:46:21", 
+      "status": "PASS", 
+      "summary": "电池状态可读取，当前电量 70.0%"
+    }, 
+    {
+      "artifacts": [
+        "artifacts/diagnosis_after_snapshot.json"
+      ], 
+      "details": [
+        "getDiagnosisStatus: severity=0.0, devices=['CameraTop']", 
+        "getActiveDiagnosis: severity=0.0, devices=['CameraTop']", 
+        "Diagnosis/Active 有 1 个非零诊断键"
+      ], 
+      "duration_ms": 92, 
+      "id": "diagnosis_after", 
+      "label": "运动后诊断与系统通知", 
+      "metrics": {
+        "active_error_keys": {
+          "Diagnosis/Active/CameraTop/Error": 1
+        }, 
+        "api": {
+          "getActiveDiagnosis": [
+            0, 
+            [
+              "CameraTop"
+            ]
+          ], 
+          "getDiagnosisStatus": [
+            0, 
+            [
+              "CameraTop"
+            ]
+          ], 
+          "getPassiveDiagnosis": []
+        }, 
+        "notifications": [], 
+        "temperature_error_keys": {}
+      }, 
+      "started_at": "2026-10-08T10:46:25", 
+      "status": "FAIL", 
+      "summary": "发现 3 项诊断故障"
+    }
+  ], 
+  "robot": {
+    "ip": "10.161.192.49", 
+    "naoqi_version": "2.8.5.10", 
+    "notes": "", 
+    "port": 9559, 
+    "robot_id": "NAO-001", 
+    "robot_name": "nao"
+  }, 
+  "safety": {
+    "interactive": true, 
+    "manual_intervention_required": false, 
+    "motion_authorized": true, 
+    "walking_authorized": false
+  }, 
+  "schema_version": "1.0", 
+  "started_at": "2026-10-08T10:42:05", 
+  "tool_version": "1.0.0", 
+  "verdict": "REJECT", 
+  "voice": {
+    "available_languages": [
+      "Japanese", 
+      "Chinese", 
+      "English"
+    ], 
+    "enabled": true, 
+    "language": "Chinese", 
+    "last_error": null
+  }
+}

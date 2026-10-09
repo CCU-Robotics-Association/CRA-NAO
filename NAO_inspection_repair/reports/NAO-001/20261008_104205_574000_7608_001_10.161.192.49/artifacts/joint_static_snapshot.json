@@ -1,0 +1,184 @@
+[
+  {
+    "absolute_error": 0.005794405937194824, 
+    "command": -0.3724623918533325, 
+    "joint": "HeadYaw", 
+    "sensor": -0.3666679859161377, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.008219458162784576, 
+    "command": 0.02198360115289688, 
+    "joint": "HeadPitch", 
+    "sensor": 0.013764142990112305, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.03509390354156494, 
+    "command": 1.4497761726379395, 
+    "joint": "LShoulderPitch", 
+    "sensor": 1.4848700761795044, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.025875374674797058, 
+    "command": 0.21758346259593964, 
+    "joint": "LShoulderRoll", 
+    "sensor": 0.19170808792114258, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.005424618721008301, 
+    "command": -1.2050544023513794, 
+    "joint": "LElbowYaw", 
+    "sensor": -1.199629783630371, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.01178857684135437, 
+    "command": -0.43763139843940735, 
+    "joint": "LElbowRoll", 
+    "sensor": -0.4494199752807617, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.00652197003364563, 
+    "command": 0.10081598162651062, 
+    "joint": "LWristYaw", 
+    "sensor": 0.10733795166015625, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.0068243443965911865, 
+    "command": 0.29642435908317566, 
+    "joint": "LHand", 
+    "sensor": 0.2896000146865845, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.00740736722946167, 
+    "command": -0.16996949911117554, 
+    "joint": "LHipYawPitch", 
+    "sensor": -0.16256213188171387, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.002417527139186859, 
+    "command": 0.11904355138540268, 
+    "joint": "LHipRoll", 
+    "sensor": 0.11662602424621582, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.016750171780586243, 
+    "command": 0.12748782336711884, 
+    "joint": "LHipPitch", 
+    "sensor": 0.14423799514770508, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.00024423748254776, 
+    "command": -0.09232626110315323, 
+    "joint": "LKneePitch", 
+    "sensor": -0.09208202362060547, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.0046212151646614075, 
+    "command": 0.0874151661992073, 
+    "joint": "LAnklePitch", 
+    "sensor": 0.0827939510345459, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.00043785572052001953, 
+    "command": -0.11084377765655518, 
+    "joint": "LAnkleRoll", 
+    "sensor": -0.11040592193603516, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.00740736722946167, 
+    "command": -0.16996949911117554, 
+    "joint": "RHipYawPitch", 
+    "sensor": -0.16256213188171387, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.013147801160812378, 
+    "command": -0.11895176768302917, 
+    "joint": "RHipRoll", 
+    "sensor": -0.1058039665222168, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.01054614782333374, 
+    "command": 0.12747198343276978, 
+    "joint": "RHipPitch", 
+    "sensor": 0.13801813125610352, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.006450004875659943, 
+    "command": -0.09231216460466385, 
+    "joint": "RKneePitch", 
+    "sensor": -0.0858621597290039, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.0014715567231178284, 
+    "command": 0.08741763979196548, 
+    "joint": "RAnklePitch", 
+    "sensor": 0.08594608306884766, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.012548521161079407, 
+    "command": 0.11076648533344269, 
+    "joint": "RAnkleRoll", 
+    "sensor": 0.09821796417236328, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.03681313991546631, 
+    "command": 1.440470814704895, 
+    "joint": "RShoulderPitch", 
+    "sensor": 1.4772839546203613, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.02587336301803589, 
+    "command": -0.21919935941696167, 
+    "joint": "RShoulderRoll", 
+    "sensor": -0.19332599639892578, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.014661431312561035, 
+    "command": 1.2063606977462769, 
+    "joint": "RElbowYaw", 
+    "sensor": 1.221022129058838, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.006102889776229858, 
+    "command": 0.4203248918056488, 
+    "joint": "RElbowRoll", 
+    "sensor": 0.41422200202941895, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.01913876086473465, 
+    "command": 0.10200529545545578, 
+    "joint": "RWristYaw", 
+    "sensor": 0.12114405632019043, 
+    "stiffness": 1.0
+  }, 
+  {
+    "absolute_error": 0.007199972867965698, 
+    "command": 0.30000004172325134, 
+    "joint": "RHand", 
+    "sensor": 0.30720001459121704, 
+    "stiffness": 1.0
+  }
+]
