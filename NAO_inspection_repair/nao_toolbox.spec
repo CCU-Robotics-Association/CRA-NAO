@@ -7,35 +7,44 @@
 
 import os
 import re
+import sys
 
 block_cipher = None
 project_dir = os.path.abspath(SPECPATH)
-sdk_dir = os.environ.get("PYNAOQI_SDK", "")
-if os.path.isfile(os.path.join(sdk_dir, "lib", "naoqi.py")):
-    sdk_dir = os.path.join(sdk_dir, "lib")
-if not os.path.isfile(os.path.join(sdk_dir, "naoqi.py")):
-    raise SystemExit("PYNAOQI_SDK must point to the pynaoqi lib directory")
+sdk_root = os.path.abspath(os.environ.get("PYNAOQI_SDK", ""))
+candidates = [sdk_root, os.path.join(sdk_root, "lib"),
+              os.path.join(sdk_root, "lib", "python2.7", "site-packages"),
+              os.path.join(sdk_root, "python2.7", "site-packages")]
+sdk_dir = next((path for path in candidates if os.path.isfile(os.path.join(path, "naoqi.py"))), None)
+if sdk_dir is None:
+    raise SystemExit("PYNAOQI_SDK must point to the matching platform SDK")
+if os.path.basename(sdk_dir) == "site-packages":
+    sdk_library_dir = os.path.dirname(os.path.dirname(sdk_dir))
+else:
+    sdk_library_dir = sdk_dir
 
 
 def include_sdk_binary(filename):
     lower = filename.lower()
-    if not lower.endswith((".dll", ".pyd")):
-        return False
-    if lower == "python27.dll":
+    native = (lower.endswith((".dll", ".pyd", ".dylib", ".so")) or ".so." in lower)
+    if not native or lower.startswith(("python27.dll", "libpython2.7")):
         return False
     if ("-gd-" in lower or lower.endswith("_d.dll") or
-            lower.endswith("_d.pyd") or lower == "zlibd.dll"):
+            lower.endswith(("_d.pyd", "_d.so", "_d.dylib", "-d.dylib")) or lower == "zlibd.dll"):
         return False
     if re.search(r"opencv_.+\d+d\.dll$", lower):
         return False
     return True
 
 
-sdk_binaries = [
-    (os.path.join(sdk_dir, name), ".")
-    for name in os.listdir(sdk_dir)
-    if include_sdk_binary(name)
-]
+sdk_binaries = []
+for directory, subdirectories, filenames in os.walk(sdk_library_dir):
+    subdirectories[:] = [name for name in subdirectories
+                         if not name.endswith(".dSYM") and name not in ("__pycache__", "cmake")]
+    for name in filenames:
+        if include_sdk_binary(name):
+            destination = os.path.relpath(directory, sdk_library_dir)
+            sdk_binaries.append((os.path.join(directory, name), destination))
 
 a = Analysis(
     [os.path.join(project_dir, "nao_gui.py")],
@@ -73,3 +82,7 @@ exe = EXE(
     runtime_tmpdir=None,
     console=False,
 )
+if sys.platform == "darwin":
+    app = BUNDLE(exe, name="NAO_Toolbox.app",
+                 bundle_identifier="org.ccu-robotics.nao-toolbox",
+                 info_plist={"NSHighResolutionCapable": True})

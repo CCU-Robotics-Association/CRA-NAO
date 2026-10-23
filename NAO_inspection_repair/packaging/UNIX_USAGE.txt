@@ -1,0 +1,23 @@
+@ Project            : NAO Robot Inspection Toolbox
+@ Description        : Linux and macOS native package usage
+@ Author             : XCrane
+
+Extract the complete archive before starting the application.
+Linux: run ./NAO_Toolbox from a graphical desktop session.
+macOS: open NAO_Toolbox.app. The package is unsigned and built for Intel x86_64.
+Apple Silicon is not a native build target of the legacy NAOqi 2.8 SDK.
+Rosetta execution on Apple Silicon has not been verified.
+
+The bundled package does not need a separate Python or NAOqi SDK installation.
+Linux still requires desktop libraries and a working graphical display.
+Reports default to ~/Documents/NAO_Reports; change the path in the GUI if needed.
+Linux startup logs: ${XDG_STATE_HOME:-~/.local/state}/NAO_Toolbox/gui_error.log
+macOS startup logs: ~/Library/Logs/NAO_Toolbox/gui_error.log
+
+Enter the robot ID and IP address, select Guided, and click the start button.
+Read docs/OPERATOR_CHECKLIST.md before enabling joint or walking checks.
+The stop button is not an emergency stop. Physical robot functions require on-site verification.
+
+Runtime check without connecting to a robot:
+Linux: ./NAO_Toolbox --check-runtime runtime-check.json
+macOS: ./NAO_Toolbox.app/Contents/MacOS/NAO_Toolbox --check-runtime runtime-check.json

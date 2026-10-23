@@ -1,0 +1,46 @@
+# @ Project            : NAO Robot Inspection Toolbox
+# @ Description        : Linux and macOS native build workflow
+# @ Author             : XCrane
+name: Build Linux and macOS packages
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native:
+    name: Native build (${{ matrix.platform }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux-x86_64
+            runner: ubuntu-22.04
+          - platform: macos-x86_64
+            runner: macos-15-intel
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Linux desktop dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y xvfb xauth libx11-6 libxext6 libxrender1 libxft2 libfontconfig1
+      - name: Build and verify bundled runtime
+        working-directory: NAO_inspection_repair
+        run: bash scripts/ci_native.sh
+      - name: Upload verified package
+        uses: actions/upload-artifact@v4
+        with:
+          name: NAO-Toolbox-${{ matrix.platform }}
+          path: |
+            NAO_inspection_repair/release/*.tar.gz
+            NAO_inspection_repair/build/native-runtime-check.json
+          if-no-files-found: error
+      - name: Upload build diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-diagnostics-${{ matrix.platform }}
+          path: |
+            NAO_inspection_repair/build/native-runtime-check.json
+            NAO_inspection_repair/build/nao_toolbox/warn-*.txt
+          if-no-files-found: ignore

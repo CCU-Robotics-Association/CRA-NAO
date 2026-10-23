@@ -23,6 +23,7 @@ except ImportError:
     from tkinter import filedialog, messagebox, simpledialog, ttk
 from .compat import ensure_dir, json_safe, to_text
 from .config import load_config
+from .desktop import desktop_font, open_path
 from .runner import list_tests, run_robot
 
 PROFILE_LABELS = {
@@ -143,6 +144,8 @@ class NaoToolboxApp(object):
         self.root.after(80, self._poll_events)
 
     def _configure_window(self):
+        self.ui_font = desktop_font(self.root)
+        self.mono_font = desktop_font(self.root, monospaced=True)
         self.root.title("NAO 机器人验修工具箱")
         self.root.geometry("1200x820")
         self.root.minsize(960, 680)
@@ -152,12 +155,12 @@ class NaoToolboxApp(object):
             style.theme_use("vista")
         elif "xpnative" in themes:
             style.theme_use("xpnative")
-        style.configure("TLabel", font=("Microsoft YaHei UI", 9))
-        style.configure("TButton", font=("Microsoft YaHei UI", 9))
-        style.configure("TCheckbutton", font=("Microsoft YaHei UI", 9))
-        style.configure("TLabelframe.Label", font=("Microsoft YaHei UI", 9))
-        style.configure("Treeview", font=("Microsoft YaHei UI", 9), rowheight=23)
-        style.configure("Treeview.Heading", font=("Microsoft YaHei UI", 9))
+        style.configure("TLabel", font=self.ui_font)
+        style.configure("TButton", font=self.ui_font)
+        style.configure("TCheckbutton", font=self.ui_font)
+        style.configure("TLabelframe.Label", font=self.ui_font)
+        style.configure("Treeview", font=self.ui_font, rowheight=23)
+        style.configure("Treeview.Heading", font=self.ui_font)
 
     def _build_menu(self):
         menubar = tk.Menu(self.root)
@@ -308,7 +311,7 @@ class NaoToolboxApp(object):
         list_frame.columnconfigure(0, weight=1)
         self.test_list = tk.Listbox(
             list_frame, selectmode=tk.EXTENDED, exportselection=False,
-            font=("Microsoft YaHei UI", 9), relief=tk.SUNKEN, borderwidth=1)
+            font=self.ui_font, relief=tk.SUNKEN, borderwidth=1)
         test_scroll = ttk.Scrollbar(list_frame, orient=tk.VERTICAL, command=self.test_list.yview)
         self.test_list.configure(yscrollcommand=test_scroll.set)
         self.test_list.grid(row=0, column=0, sticky=tk.NSEW)
@@ -372,7 +375,7 @@ class NaoToolboxApp(object):
         log_box.columnconfigure(0, weight=1)
         self.log_text = tk.Text(
             log_box, wrap=tk.NONE, state=tk.DISABLED, relief=tk.SUNKEN,
-            borderwidth=1, background="white", font=("Consolas", 9))
+            borderwidth=1, background="white", font=self.mono_font)
         log_y = ttk.Scrollbar(log_box, orient=tk.VERTICAL, command=self.log_text.yview)
         log_x = ttk.Scrollbar(log_box, orient=tk.HORIZONTAL, command=self.log_text.xview)
         self.log_text.configure(yscrollcommand=log_y.set, xscrollcommand=log_x.set)
@@ -751,7 +754,7 @@ class NaoToolboxApp(object):
         body = ttk.Frame(window, padding=12)
         body.pack(fill=tk.BOTH, expand=True)
         tk.Message(
-            body, text=message, width=520, font=("Microsoft YaHei UI", 9),
+            body, text=message, width=520, font=self.ui_font,
             background=self.root.cget("background"), justify=tk.LEFT).pack(
                 fill=tk.X, pady=(0, 10))
 
@@ -802,7 +805,7 @@ class NaoToolboxApp(object):
         body.pack(fill=tk.BOTH, expand=True)
         tk.Message(
             body, text=message + "\n\n操作完成后点击“继续”。", width=520,
-            font=("Microsoft YaHei UI", 9), background=self.root.cget("background"),
+            font=self.ui_font, background=self.root.cget("background"),
             justify=tk.LEFT).pack(fill=tk.X, pady=(0, 10))
         buttons = ttk.Frame(body)
         buttons.pack(fill=tk.X)
@@ -830,7 +833,7 @@ class NaoToolboxApp(object):
         body = ttk.Frame(window, padding=12)
         body.pack(fill=tk.BOTH, expand=True)
         tk.Message(
-            body, text=message, width=560, font=("Microsoft YaHei UI", 9),
+            body, text=message, width=560, font=self.ui_font,
             background=self.root.cget("background"), justify=tk.LEFT).pack(
                 fill=tk.X, pady=(0, 8))
         ttk.Label(body, text="请输入安全口令：%s" % token).pack(anchor=tk.W)
@@ -953,7 +956,7 @@ class NaoToolboxApp(object):
         window.title("项目详情 - %s" % result.get("label", result.get("id", "")))
         window.geometry("720x500")
         window.transient(self.root)
-        text_widget = tk.Text(window, wrap=tk.WORD, font=("Consolas", 9), relief=tk.SUNKEN)
+        text_widget = tk.Text(window, wrap=tk.WORD, font=self.mono_font, relief=tk.SUNKEN)
         scroll = ttk.Scrollbar(window, orient=tk.VERTICAL, command=text_widget.yview)
         text_widget.configure(yscrollcommand=scroll.set)
         text_widget.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(6, 0), pady=6)
@@ -981,10 +984,7 @@ class NaoToolboxApp(object):
 
     def _open_path(self, path):
         try:
-            if hasattr(os, "startfile"):
-                os.startfile(os.path.abspath(path))
-            else:
-                raise RuntimeError("当前系统不支持自动打开文件")
+            open_path(path)
         except Exception as exc:
             messagebox.showerror("打开失败", to_text(exc), parent=self.root)
 

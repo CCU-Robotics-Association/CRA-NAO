@@ -78,7 +78,10 @@ Write-Host ("Build complete: " + $executable)
 Write-Host 'The bundled NAOqi SDK is large, so one-file startup may take a while.'
 
 $releaseRoot = Join-Path $PSScriptRoot 'release'
-$releaseName = 'NAO_Toolbox-1.0.0-win64'
+$versionSource = [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'nao_diag\__init__.py'))
+$toolVersion = [regex]::Match($versionSource, '__version__\s*=\s*"([^"]+)"').Groups[1].Value
+if (-not $toolVersion) { throw 'The application version is missing.' }
+$releaseName = 'NAO_Toolbox-' + $toolVersion + '-win64'
 $packageDir = Join-Path $releaseRoot $releaseName
 New-Item -ItemType Directory -Path $packageDir -Force | Out-Null
 Copy-Item -LiteralPath $executable -Destination (Join-Path $packageDir 'NAO_Toolbox.exe') -Force

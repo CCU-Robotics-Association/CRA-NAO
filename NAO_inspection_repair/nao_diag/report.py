@@ -11,6 +11,7 @@ import json
 import os
 from .compat import PY2, ensure_dir, json_safe, to_text, write_text
 from .model import overall_status
+from . import __version__
 
 STATUS_TEXT = {
     "PASS": "通过",
@@ -68,7 +69,7 @@ def build_report_payload(context, started_at, finished_at):
     status = overall_status(context.results)
     return {
         "schema_version": "1.0",
-        "tool_version": "1.0.0",
+        "tool_version": __version__,
         "started_at": started_at,
         "finished_at": finished_at,
         "robot": context.robot,

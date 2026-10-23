@@ -89,8 +89,8 @@ def _show_fatal(message):
 def _write_fatal_log(details):
     try:
         details = _safe_text(details)
-        base = os.environ.get("LOCALAPPDATA") or os.environ.get("TEMP") or os.getcwd()
-        directory = os.path.join(base, "NAO_Toolbox")
+        from nao_diag.desktop import log_directory
+        directory = log_directory()
         if not os.path.isdir(directory):
             os.makedirs(directory)
         path = os.path.join(directory, "gui_error.log")
