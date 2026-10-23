@@ -1,22 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : 命令行参数解析与批量验收
 @ Author             : XCrane
 """
-
 from __future__ import print_function, unicode_literals
 import argparse
 import csv
 import io
-import os
 import sys
 from .client import NaoqiUnavailable
-from .compat import (PY2, console_write, decode_argv, ensure_dir, now_iso,
-                     slugify, stream_write, timestamp_slug, to_text)
+from .compat import PY2, console_write, decode_argv, stream_write, to_text
 from .config import load_config
-from .context import DiagnosticContext
-from .model import FAIL, PASS, WARN, make_result
-from .report import build_report_payload, write_reports
 from .runner import list_tests, run_robot
 
 class UnicodeArgumentParser(argparse.ArgumentParser):
@@ -25,7 +20,7 @@ class UnicodeArgumentParser(argparse.ArgumentParser):
             stream_write(file or sys.stderr, message)
 
 def build_parser():
-    parser = UnicodeArgumentParser(description="NAO 机器人验修半自动化工具箱配置",)
+    parser = UnicodeArgumentParser(description="NAO 机器人验修工具箱")
     parser.add_argument("--ip", action="append", help="IP 地址")
     parser.add_argument("--port", type=int, default=9559, help="NAOqi 端口，默认 9559")
     parser.add_argument("--robot-id", help="NAO 编号")
@@ -50,7 +45,6 @@ def build_parser():
     parser.add_argument("--ssh-key", help="SSH 私钥路径；不支持命令行传输密码")
     parser.add_argument("--log-dir", action="append", default=[], help="额外分析已有日志目录；可重复")
     parser.add_argument("--list-tests", action="store_true", help="列出所有测试 ID")
-    parser.add_argument("--demo-report", action="store_true", help="不连接机器人，生成 demo 报告")
     parser.add_argument("--verbose", action="store_true", help="启用详细输出")
     return parser
 
@@ -76,7 +70,7 @@ def _read_inventory(path):
             if not ip:
                 raise ValueError("CSV 第 %d 行缺少 ip" % (index + 1))
             robots.append({
-                "robot_id": to_text(row.get("robot_id") or "NAO-%02d" % index),
+                "robot_id": to_text(row.get("robot_id") or "%02d" % index).strip(),
                 "ip": ip,
                 "port": int(row.get("port") or 9559),
                 "notes": to_text(row.get("notes", "")),
@@ -92,33 +86,10 @@ def _robots_from_args(args):
     for index, ip in enumerate(args.ip or [], 1):
         robot_id = args.robot_id if len(args.ip or []) == 1 else None
         robots.append({
-            "robot_id": robot_id or "NAO-%02d" % index,
-            "ip": to_text(ip), "port": args.port, "notes": "",
+            "robot_id": robot_id or "%02d" % index,
+            "ip": to_text(ip).strip(), "port": args.port, "notes": "",
         })
     return robots
-
-def _demo(args, config):
-    from .client import NaoClient
-    args.voice = False
-    args.interactive = False
-    output_dir = os.path.abspath(os.path.join(args.output, "DEMO", timestamp_slug()))
-    ensure_dir(output_dir)
-    robot = {"robot_id": "DEMO-NAO", "ip": "192.0.2.10", "port": 9559,
-             "robot_name": "Demo", "naoqi_version": "2.8.x"}
-    context = DiagnosticContext(NaoClient(robot["ip"]), robot, config, output_dir, args)
-    context.results = [
-        make_result("connection", "网络与 NAOqi 连接", PASS, "demo: NAOqi 可连接",
-                    metrics={"tcp_latency_ms": 12.3, "naoqi_version": "2.8.x"}, duration_ms=84),
-        make_result("temperature", "关节与机体温度", WARN, "demo: 肘关节接近预警阈值",
-                    metrics={"joint": "RShoulderPitch", "temperature_c": 52.0}, duration_ms=42),
-        make_result("leds", "LED 灯组", FAIL, "demo: 右眼存在暗点",
-                    metrics={"operator_visual_confirmation": False}, duration_ms=3100),
-    ]
-    payload = build_report_payload(context, now_iso(), now_iso())
-    paths = write_reports(context, payload)
-    console_write("demo 报告已生成：%s" % paths["html"])
-    
-    return 0
 
 def main(argv=None):
     parser = build_parser()
@@ -132,8 +103,6 @@ def main(argv=None):
     except Exception as exc:
         console_write("配置文件读取失败：%s" % to_text(exc))
         return 2
-    if args.demo_report:
-        return _demo(args, config)
     valid_ids = set(item[0] for item in list_tests())
     profile_ids = set(item[0] for item in list_tests(args.profile))
     only_ids = set(item.strip() for item in (args.only or "").split(",") if item.strip())
@@ -159,6 +128,13 @@ def main(argv=None):
         return 2
     if not robots:
         parser.error("请提供 --ip 或 --inventory")
+    if not 1 <= args.ssh_port <= 65535:
+        console_write("SSH 端口必须在 1 到 65535 之间")
+        return 2
+    for robot in robots:
+        if not robot["ip"] or not 1 <= robot["port"] <= 65535:
+            console_write("机器人 %s 的地址为空或端口超出范围" % robot["robot_id"])
+            return 2
     if args.interactive is None:
         args.interactive = args.profile in ("guided", "full")
     if args.allow_walk and not args.allow_motion:

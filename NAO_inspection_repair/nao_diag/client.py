@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : NAOqi 通信与传感数据读取
 @ Author             : XCrane
 """
-
 from __future__ import unicode_literals
 import socket
 import time
@@ -60,7 +60,7 @@ class NaoClient(object):
         except ImportError as exc:
             raise NaoqiUnavailable(
                 "无法导入 naoqi：请通过 run.ps1 启动，或把 pynaoqi 的 lib 目录加入 "
-                "PYTHONPATH/PATH。Raw Error：%s" % to_text(exc)
+                "PYTHONPATH/PATH。错误：%s" % to_text(exc)
             )
         self._proxy_factory = ALProxy
         return self._proxy_factory
@@ -100,6 +100,8 @@ class NaoClient(object):
         memory = self.proxy("ALMemory")
         try:
             values = memory.getListData(keys)
+            if not isinstance(values, (list, tuple)) or len(values) != len(keys):
+                raise ValueError("ALMemory 返回的数据数量与请求不符")
             return dict(zip(keys, values))
         except Exception:
             result = {}

@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : 关节、行走检查与运动安全控制
 @ Author             : XCrane
 """
-
 from __future__ import unicode_literals
 import re
 import time
-from .client import normalize_battery_percent
-from .compat import safe_float, to_text
-from .model import FAIL, PASS, SKIP, WARN, Stopwatch
-from .tests_common import active_value, finish, temperature_snapshot
+from ..client import normalize_battery_percent
+from ..compat import safe_float, to_text
+from ..model import FAIL, PASS, SKIP, WARN, Stopwatch
+from .common import active_value, finish, temperature_snapshot
 
 class SafetyAbort(RuntimeError):
     pass

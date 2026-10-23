@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : 验收上下文、日志及人工确认
 @ Author             : XCrane
 """
-
 from __future__ import unicode_literals
 import io
 import json
@@ -14,9 +14,10 @@ from .compat import (console_write, ensure_dir, json_safe, now_iso, prompt_line,
 from .voice import SpeechAnnouncer
 
 class RunLogger(object):
-    def __init__(self, path, verbose=False):
+    def __init__(self, path, verbose=False, event_sink=None):
         self.path = path
         self.verbose = bool(verbose)
+        self.event_sink = event_sink
         ensure_dir(os.path.dirname(os.path.abspath(path)))
         self._lock = threading.Lock()
 
@@ -26,7 +27,13 @@ class RunLogger(object):
             with io.open(self.path, "a", encoding="utf-8") as handle:
                 handle.write(line + "\n")
         if show:
-            console_write(line)
+            if self.event_sink is not None:
+                try:
+                    self.event_sink(line)
+                except Exception:
+                    console_write(line)
+            else:
+                console_write(line)
 
     def info(self, message):
         self._write("INFO", message, True)
@@ -54,6 +61,7 @@ class DiagnosticContext(object):
         self.logger = RunLogger(
             os.path.join(output_dir, "run.log"),
             verbose=bool(getattr(options, "verbose", False)),
+            event_sink=getattr(options, "event_sink", None),
         )
         self.announcer = SpeechAnnouncer(
             client,
@@ -90,6 +98,10 @@ class DiagnosticContext(object):
     def ask_yes_no(self, question, default=None):
         if not self.interactive:
             return default
+        handler = getattr(self.options, "prompt_handler", None)
+        if handler is not None:
+            answer = handler("yes_no", to_text(question), default=default)
+            return default if answer is None else bool(answer)
         suffix = " [y/n] "
         while True:
             answer = prompt_line(to_text(question) + suffix).strip().lower()
@@ -103,8 +115,12 @@ class DiagnosticContext(object):
 
     def wait_enter(self, message):
         if self.assume_yes or not self.interactive:
-            return
+            return True
+        handler = getattr(self.options, "prompt_handler", None)
+        if handler is not None:
+            return handler("continue", to_text(message)) is not False
         prompt_line(to_text(message) + " [按 Enter 继续] ")
+        return True
 
     def require_token(self, message, token):
         if self.assume_yes:
@@ -112,6 +128,12 @@ class DiagnosticContext(object):
             return True
         if not self.interactive:
             return False
+        handler = getattr(self.options, "prompt_handler", None)
+        if handler is not None:
+            answer = handler("token", to_text(message), token=to_text(token))
+            if isinstance(answer, bool):
+                return answer
+            return to_text(answer or "").strip().upper() == to_text(token).upper()
         answer = prompt_line("%s\n请输入 %s 继续：" % (to_text(message), to_text(token)))
         return answer.strip().upper() == to_text(token).upper()
 

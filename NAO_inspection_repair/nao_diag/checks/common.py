@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : 检测采样、统计与图像输出
 @ Author             : XCrane
 """
-
 from __future__ import unicode_literals
 import math
 import struct
 import time
 from array import array
-from .compat import mean, safe_float, stddev, to_text
-from .model import Stopwatch, make_result
+from ..compat import mean, safe_float, stddev, to_text
+from ..model import Stopwatch, make_result
 
 def finish(timer, test_id, label, status, summary, metrics=None, details=None,
            artifacts=None):

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : 验收流程调度与结果收集
 @ Author             : XCrane
 """
-
 from __future__ import unicode_literals
 import os
 import traceback
@@ -14,15 +14,15 @@ from .log_analysis import analyze_paths, discover_log_files
 from .model import ERROR, FAIL, PASS, SKIP, WARN, Stopwatch, make_result, overall_status
 from .remote_logs import collect_remote_logs
 from .report import build_report_payload, write_reports
-from .tests_auto import (test_audio, test_battery, test_battery_after,
+from .checks.automatic import (test_audio, test_battery, test_battery_after,
                          test_board_communication,
                          test_cameras, test_connection, test_diagnosis,
                          test_diagnosis_after, test_fsr,
                          test_imu, test_joints_static, test_services, test_sonar,
                          test_system, test_temperature, test_temperature_after)
-from .tests_common import finish
-from .tests_guided import test_bumpers, test_leds, test_touch
-from .tests_motion import test_joint_motion, test_walk
+from .checks.common import finish
+from .checks.guided import test_bumpers, test_leds, test_touch
+from .checks.motion import test_joint_motion, test_walk
 
 def test_remote_logs(ctx):
     timer = Stopwatch()
@@ -53,7 +53,7 @@ def test_remote_logs(ctx):
                           {"collection": collection}, details)
         return finish(timer, "logs", "机器人系统日志", SKIP,
                       "未要求 SSH 日志采集；已通过 ALDiagnosis/通知完成稳定 API 检查",
-                      details=["需要原生日志时加 -CollectLogs，并推荐配置 -SshKey。"])
+                      details=["需要原生日志时加 -CollectLogs，并配置 -SshKey。"])
     analysis = analyze_paths(
         paths, max_samples=ctx.config["logging"]["max_samples_per_severity"])
     artifact = ctx.write_json_artifact("log_analysis.json", analysis)
@@ -74,6 +74,9 @@ def test_remote_logs(ctx):
     if collection and collection["errors"]:
         status = WARN if status == PASS else status
         details.append("部分远程日志路径在此固件上不存在或无权读取")
+    if analysis["unreadable_files"]:
+        status = WARN if status == PASS else status
+        details.append("%d 个日志文件读取失败" % len(analysis["unreadable_files"]))
     details.append("NAOqi 文本日志格式非稳定 API；关键词结果仅作为辅助证据")
     metrics = {"analysis": analysis, "source_files": paths, "collection": collection}
     return finish(timer, "logs", "机器人系统日志", status, summary,
@@ -117,6 +120,33 @@ def _selected_specs(options):
         specs = [item for item in specs if item[0] in only]
     return [item for item in specs if item[0] not in skip]
 
+def _notify_progress(options, event, payload=None):
+    callback = getattr(options, "progress_callback", None)
+    if callback is None:
+        return
+    try:
+        callback(event, payload or {})
+    except Exception:
+        pass
+
+def _cancel_requested(options):
+    cancel_event = getattr(options, "cancel_event", None)
+    return bool(cancel_event is not None and cancel_event.is_set())
+
+def _append_skipped_specs(context, options, specs, start_position, summary):
+    results = []
+    remaining = specs[max(int(start_position) - 1, 0):]
+    for position, (test_id, label, _function, _profiles) in enumerate(
+            remaining, start_position):
+        result = make_result(test_id, label, SKIP, summary)
+        context.results.append(result)
+        results.append(result)
+        context.logger.info("未执行项目 %s：%s" % (test_id, summary))
+        _notify_progress(options, "test_finished", {
+            "index": position, "total": len(specs), "result": result,
+        })
+    return results
+
 def _test_error(ctx, test_id, label, timer, exc):
     trace = traceback.format_exc()
     ctx.logger.error("%s 发生未处理异常：%s" % (test_id, to_text(exc)))
@@ -141,33 +171,65 @@ def run_robot(robot, config, options):
     client = NaoClient(ip, port)
     context = DiagnosticContext(client, robot, config, output_dir, options)
     started_at = now_iso()
-    context.logger.info("开始检查 %s (%s:%d)，配置 %s" % (robot_id, ip, port, options.profile))
-    for test_id, label, function, _profiles in _selected_specs(options):
-        timer = Stopwatch()
-        context.logger.info("开始项目 %s - %s" % (test_id, label))
-        try:
-            result = function(context)
-        except KeyboardInterrupt:
-            context.logger.warning("用户中断测试")
-            raise
-        except Exception as exc:
-            result = _test_error(context, test_id, label, timer, exc)
-        context.results.append(result)
-        if test_id in ("joints_motion", "walk") and result["status"] in (FAIL, ERROR):
-            context.runtime["motion_intervention_required"] = True
-        context.logger.info("完成项目 %s：%s - %s" % (
-            test_id, result["status"], result["summary"]))
-        if result["status"] == PASS:
-            context.announcer.test_passed(label)
-        if test_id == "connection" and result["status"] in (FAIL, ERROR):
-            context.logger.error("连接失败，后续硬件项目无法执行；提前结束本机检查")
-            break
-    status = overall_status(context.results)
-    context.announcer.final(status, robot_id)
-    context.announcer.restore()
-    finished_at = now_iso()
-    payload = build_report_payload(context, started_at, finished_at)
-    paths = write_reports(context, payload)
-    context.logger.info("检查完成：%s / %s；HTML 报告：%s" % (
-        payload["overall_status"], payload["verdict"], paths["html"]))
-    return payload, paths
+    specs = _selected_specs(options)
+    _notify_progress(options, "run_started", {
+        "robot": robot, "total": len(specs), "output_dir": output_dir,
+    })
+    try:
+        context.logger.info("开始检查 %s (%s:%d)，配置 %s" % (robot_id, ip, port, options.profile))
+        for index, (test_id, label, function, _profiles) in enumerate(specs, 1):
+            if _cancel_requested(options):
+                summary = "已在上一个项目安全结束后停止，本项目未执行"
+                context.logger.warning("用户请求停止；后续项目不再执行")
+                skipped_results = _append_skipped_specs(
+                    context, options, specs, index, summary)
+                _notify_progress(options, "run_cancelled", {
+                    "index": index, "total": len(specs),
+                    "results": skipped_results,
+                })
+                break
+            timer = Stopwatch()
+            context.logger.info("开始项目 %s - %s" % (test_id, label))
+            _notify_progress(options, "test_started", {
+                "index": index, "total": len(specs),
+                "test_id": test_id, "label": label,
+            })
+            try:
+                result = function(context)
+            except KeyboardInterrupt:
+                context.logger.warning("用户中断测试")
+                raise
+            except Exception as exc:
+                result = _test_error(context, test_id, label, timer, exc)
+            context.results.append(result)
+            if test_id in ("joints_motion", "walk") and result["status"] in (FAIL, ERROR):
+                context.runtime["motion_intervention_required"] = True
+            context.logger.info("完成项目 %s：%s - %s" % (
+                test_id, result["status"], result["summary"]))
+            _notify_progress(options, "test_finished", {
+                "index": index, "total": len(specs), "result": result,
+            })
+            if result["status"] == PASS:
+                context.announcer.test_passed(label)
+            if test_id == "connection" and result["status"] in (FAIL, ERROR):
+                context.logger.error("连接失败，后续硬件项目无法执行；提前结束本机检查")
+                _append_skipped_specs(
+                    context, options, specs, index + 1,
+                    "连接失败，后续硬件项目未执行")
+                break
+        status = overall_status(context.results)
+        context.announcer.final(status, robot_id)
+        finished_at = now_iso()
+        payload = build_report_payload(context, started_at, finished_at)
+        paths = write_reports(context, payload)
+        context.logger.info("检查完成：%s / %s；HTML 报告：%s" % (
+            payload["overall_status"], payload["verdict"], paths["html"]))
+        _notify_progress(options, "run_finished", {
+            "payload": payload, "paths": paths,
+        })
+        return payload, paths
+    except Exception:
+        _notify_progress(options, "run_error", {"traceback": traceback.format_exc()})
+        raise
+    finally:
+        context.announcer.restore()

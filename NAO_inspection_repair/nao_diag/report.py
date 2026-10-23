@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : HTML、JSON 与 CSV 报告输出
 @ Author             : XCrane
 """
-
 from __future__ import unicode_literals
 import csv
 import io
 import json
-import os    
+import os
 from .compat import PY2, ensure_dir, json_safe, to_text, write_text
 from .model import overall_status
 
@@ -152,12 +152,12 @@ def render_html(payload):
 <title>NAO 验修报告 - {robot_id}</title>
 <style>
 body{{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;margin:0;background:#f4f6f8;color:#17212b}}
-.wrap{{max-width:1180px;margin:32px auto;padding:0 20px}} .hero{{background:#fff;border-radius:14px;padding:24px;box-shadow:0 4px 18px #17212b14}}
+.wrap{{max-width:1180px;margin:24px auto;padding:0 20px}} .hero{{background:#fff;border:1px solid #ccc;padding:20px}}
 h1{{margin:0 0 8px}} .muted{{color:#66788a;font-size:.9em}} .summary{{display:flex;gap:16px;flex-wrap:wrap;margin-top:18px}}
-.card{{padding:12px 16px;border-radius:10px;background:#eef2f5}} table{{width:100%;border-collapse:collapse;background:#fff;margin-top:20px;border-radius:12px;overflow:hidden}}
+.card{{padding:8px 16px;border-left:3px solid #ccc}} table{{width:100%;border-collapse:collapse;background:#fff;margin-top:20px;border:1px solid #ccc;table-layout:fixed}}
 th,td{{padding:13px 12px;border-bottom:1px solid #e7ebef;text-align:left;vertical-align:top}} th{{background:#eaf0f5}} code{{white-space:nowrap}}
-.badge{{font-weight:700;padding:4px 9px;border-radius:999px}} .PASS{{background:#d9f7e7;color:#087443}} .WARN{{background:#fff1c7;color:#8a5b00}}
-.FAIL,.ERROR{{background:#ffe0df;color:#a51d19}} .SKIP{{background:#e7ebef;color:#536273}} details{{margin-top:8px}} pre{{white-space:pre-wrap;max-height:500px;overflow:auto;background:#101820;color:#e8f0f5;padding:12px;border-radius:8px}}
+.badge{{font-weight:700;padding:3px 6px}} td{{overflow-wrap:anywhere}} th:first-child{{width:22%}} th:nth-child(2){{width:9%}} th:last-child{{width:10%}} code{{white-space:normal}} .PASS{{background:#d9f7e7;color:#087443}} .WARN{{background:#fff1c7;color:#8a5b00}}
+.FAIL,.ERROR{{background:#ffe0df;color:#a51d19}} .SKIP{{background:#e7ebef;color:#536273}} details{{margin-top:8px}} pre{{white-space:pre-wrap;max-height:500px;overflow:auto;background:#f5f5f5;color:#222;padding:10px;border:1px solid #ddd}}
 a{{color:#0068b5}}
 </style></head><body><div class="wrap"><section class="hero">
 <h1>NAO 机器人验修报告</h1><div class="muted">编号 {robot_id} · {ip}:{port} · {started} 至 {finished}</div>

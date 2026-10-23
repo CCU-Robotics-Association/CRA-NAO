@@ -1,0 +1,9 @@
+# -*- coding: utf-8 -*-
+# """
+# @ Project            : NAO 机器人验修工具箱
+# @ Description        : Windows EXE 打包依赖
+# @ Author             : XCrane
+# """
+
+# 仅用于打包 Windows EXE
+PyInstaller==3.6

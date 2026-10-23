@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+@ Project            : NAO 机器人验修工具箱
+@ Description        : 默认配置、阈值加载与参数校验
+@ Author             : XCrane
+"""
 from __future__ import unicode_literals
 
 import copy
@@ -78,6 +83,16 @@ def load_config(path=None):
         return result
     with io.open(path, "r", encoding="utf-8") as handle:
         custom = json.load(handle)
+    if not isinstance(custom, dict):
+        raise ValueError("配置文件的根节点必须是对象")
+    for section, values in custom.items():
+        if section not in DEFAULT_CONFIG:
+            raise ValueError("未知配置分组：%s" % section)
+        if not isinstance(values, dict):
+            raise ValueError("配置分组 %s 必须是对象" % section)
+        unknown = set(values) - set(DEFAULT_CONFIG[section])
+        if unknown:
+            raise ValueError("未知配置项：%s.%s" % (section, sorted(unknown)[0]))
     result = deep_merge(DEFAULT_CONFIG, custom)
     validate_config(result)
     return result
@@ -85,9 +100,11 @@ def load_config(path=None):
 
 def _bounded(config, section, key, minimum, maximum):
     value = config[section][key]
+    if isinstance(value, bool):
+        raise ValueError("%s.%s 必须是数字" % (section, key))
     try:
         number = float(value)
-    except (TypeError, ValueError):
+    except (TypeError, ValueError, OverflowError):
         raise ValueError("%s.%s 必须是数字" % (section, key))
     if math.isnan(number) or math.isinf(number) or number < minimum or number > maximum:
         raise ValueError(
@@ -97,8 +114,15 @@ def _bounded(config, section, key, minimum, maximum):
     return number
 
 
+def _integer(config, section, key, minimum, maximum):
+    number = _bounded(config, section, key, minimum, maximum)
+    if number != int(number):
+        raise ValueError("%s.%s 必须是整数" % (section, key))
+    config[section][key] = int(number)
+    return int(number)
+
+
 def validate_config(config):
-    """Reject overrides that could turn an acceptance threshold into unsafe motion."""
     _bounded(config, "thresholds", "battery_warn_below_percent", 0.0, 100.0)
     motion_battery = _bounded(config, "thresholds", "motion_min_battery_percent", 40.0, 100.0)
     warn_temp = _bounded(config, "thresholds", "joint_temperature_warn_c", 35.0, 55.0)
@@ -126,7 +150,24 @@ def validate_config(config):
     _bounded(config, "thresholds", "joint_motion_error_fail_rad", 0.02, 0.20)
     _bounded(config, "thresholds", "joint_motion_min_fraction", 0.20, 0.90)
     _bounded(config, "sampling", "touch_timeout_seconds", 3.0, 30.0)
-    _bounded(config, "sampling", "camera_fps", 1.0, 15.0)
+    _integer(config, "sampling", "camera_fps", 1, 15)
+    for sensor in ("imu", "sonar", "audio"):
+        _integer(config, "sampling", sensor + "_samples", 2, 1000)
+        _bounded(config, "sampling", sensor + "_interval_seconds", 0.01, 2.0)
+    _integer(config, "sampling", "camera_resolution", 0, 2)
+    _integer(config, "sampling", "camera_color_space", 11, 11)
+    _bounded(config, "thresholds", "board_observation_seconds", 0.1, 30.0)
+    camera_min = _bounded(config, "thresholds", "camera_mean_min", 0.0, 255.0)
+    camera_max = _bounded(config, "thresholds", "camera_mean_max", 0.0, 255.0)
+    if camera_min >= camera_max:
+        raise ValueError("camera_mean_min 必须低于 camera_mean_max")
+    _bounded(config, "thresholds", "camera_stddev_min", 0.0, 128.0)
+    _bounded(config, "thresholds", "audio_min_energy_rise", 0.0, 1e9)
+    _bounded(config, "thresholds", "audio_min_ratio", 1.0, 1000.0)
+    sonar_min = _bounded(config, "thresholds", "sonar_min_m", 0.0, 10.0)
+    sonar_max = _bounded(config, "thresholds", "sonar_max_m", 0.0, 10.0)
+    if sonar_min >= sonar_max:
+        raise ValueError("sonar_min_m 必须低于 sonar_max_m")
     _bounded(config, "motion", "stiffness", 0.10, 0.50)
     _bounded(config, "motion", "duration_seconds", 0.50, 3.00)
     _bounded(config, "motion", "joint_amplitude_rad", 0.02, 0.15)
@@ -134,7 +175,8 @@ def validate_config(config):
     _bounded(config, "motion", "limit_margin_rad", 0.05, 0.40)
     _bounded(config, "motion", "walk_distance_m", 0.03, 0.20)
     _bounded(config, "motion", "walk_speed_fraction", 0.05, 0.35)
-    _bounded(config, "logging", "remote_tail_lines", 100.0, 10000.0)
+    _integer(config, "logging", "remote_tail_lines", 100, 10000)
+    _integer(config, "logging", "max_samples_per_severity", 1, 1000)
     if motion_battery < config["thresholds"]["battery_warn_below_percent"]:
         raise ValueError("motion_min_battery_percent 不能低于 battery_warn_below_percent")
     return config

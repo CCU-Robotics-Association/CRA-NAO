@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : 验收结果模型、状态与计时
 @ Author             : XCrane
 """
-
 from __future__ import unicode_literals
 import time
 from .compat import now_iso, to_text

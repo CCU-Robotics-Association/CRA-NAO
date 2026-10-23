@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : Python 2/3 编码、文件与数值兼容处理
 @ Author             : XCrane
 """
-
 from __future__ import print_function, unicode_literals
 import datetime
 import io

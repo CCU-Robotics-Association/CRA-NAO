@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : 系统、传感器、相机与音频检查
 @ Author             : XCrane
 """
-
 from __future__ import unicode_literals
 import os
 import time
-from .client import normalize_battery_percent, pairs_to_dict
-from .compat import mean, safe_float, stddev, to_text
-from .model import ERROR, FAIL, PASS, SKIP, WARN, Stopwatch
-from .tests_common import (active_value, finish, rgb_statistics, sample_memory,
+from ..client import normalize_battery_percent, pairs_to_dict
+from ..compat import mean, safe_float, stddev, to_text
+from ..model import ERROR, FAIL, PASS, SKIP, WARN, Stopwatch
+from .common import (active_value, finish, rgb_statistics, sample_memory,
                            statistics, temperature_snapshot, write_rgb_bmp)
 
 def test_connection(ctx):
@@ -524,7 +524,9 @@ def test_sonar(ctx):
         time.sleep(0.35)
         if ctx.interactive:
             ctx.announcer.say("请把平整物体放到机器人胸前约四十厘米处", "Place a flat target about forty centimeters in front of me.")
-            ctx.wait_enter("请把宽平面物体或手掌放在两个声纳前约 0.40 米处")
+            if not ctx.wait_enter("请把宽平面物体或手掌放在两个声纳前约 0.40 米处"):
+                return finish(timer, "sonar", "左右声纳", SKIP,
+                              "操作者取消了声纳标靶采样")
         sampling = ctx.config["sampling"]
         samples = sample_memory(ctx.client, keys, sampling["sonar_samples"],
                                 sampling["sonar_interval_seconds"])

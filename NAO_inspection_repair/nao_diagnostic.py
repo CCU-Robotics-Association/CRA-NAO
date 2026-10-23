@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : 命令行验收入口
 @ Author             : XCrane
 """
-
 from __future__ import unicode_literals
 from nao_diag.cli import main
 

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : 日志文件扫描与故障关键词识别
 @ Author             : XCrane
 """
-
 from __future__ import unicode_literals
 import io
 import os
@@ -37,11 +37,11 @@ def classify_line(line):
     text = to_text(line).strip()
     if not text:
         return None, None
-    if any(pattern.search(text) for pattern in IGNORE_PATTERNS):
-        return None, None
     for category, pattern in CRITICAL_PATTERNS:
         if pattern.search(text):
             return "critical", category
+    if any(pattern.search(text) for pattern in IGNORE_PATTERNS):
+        return None, None
     for category, pattern in ERROR_PATTERNS:
         if pattern.search(text):
             return "error", category

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : 通过 SSH 采集机器人系统日志
 @ Author             : XCrane
 """
-
 from __future__ import unicode_literals
 import os
 import subprocess

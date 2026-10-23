@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : 触摸、按键与灯光人工引导检查
 @ Author             : XCrane
 """
-
 from __future__ import unicode_literals
 import time
-from .compat import safe_float, to_text
-from .model import FAIL, PASS, SKIP, WARN, Stopwatch
-from .tests_common import finish
+from ..compat import safe_float, to_text
+from ..model import FAIL, PASS, SKIP, WARN, Stopwatch
+from .common import finish
 
 TOUCH_LABELS = {
     "Head/Touch": "头部触摸区域（任意位置）",

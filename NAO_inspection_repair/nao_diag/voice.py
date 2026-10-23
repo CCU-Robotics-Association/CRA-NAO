@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-@ Project            : CRA NAO 机器人验修半自动化工具箱
+@ Project            : NAO 机器人验修工具箱
+@ Description        : 验收语音播报与语言恢复
 @ Author             : XCrane
 """
-
 from __future__ import unicode_literals
 from .compat import to_text
 
