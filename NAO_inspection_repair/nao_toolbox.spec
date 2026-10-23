@@ -64,14 +64,26 @@ for directory, subdirectories, filenames in os.walk(sdk_library_dir):
                 destination = os.path.relpath(directory, sdk_library_dir)
             sdk_binaries.append((os.path.join(directory, name), destination))
 
+package_data = [
+    (os.path.join(project_dir, "config.example.json"), "."),
+    (os.path.join(project_dir, "docs"), "docs"),
+]
+if sys.platform == "darwin":
+    # Python.org 的 Tk 是 dylib，并非旧 hook 假定的独立 Tcl/Tk framework。
+    import Tkinter
+    tcl_root = Tkinter.Tcl().eval("info library")
+    tk_root = os.path.join(os.path.dirname(tcl_root), "tk" + str(Tkinter.TkVersion))
+    for directory, filename, destination in ((tcl_root, "init.tcl", "tcl"),
+                                              (tk_root, "tk.tcl", "tk")):
+        if not os.path.isfile(os.path.join(directory, filename)):
+            raise SystemExit("Missing Tk runtime data: " + directory)
+        package_data.append((directory, destination))
+
 a = Analysis(
     [os.path.join(project_dir, "nao_gui.py")],
     pathex=[project_dir, sdk_dir],
     binaries=sdk_binaries,
-    datas=[
-        (os.path.join(project_dir, "config.example.json"), "."),
-        (os.path.join(project_dir, "docs"), "docs"),
-    ],
+    datas=package_data,
     hiddenimports=[
         "naoqi", "qi", "inaoqi", "_inaoqi", "_qi",
         "allog", "_allog", "motion", "vision_definitions",
