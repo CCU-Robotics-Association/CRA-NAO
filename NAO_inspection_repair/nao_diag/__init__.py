@@ -4,5 +4,5 @@
 @ Description        : 工具包版本与作者信息
 @ Author             : XCrane
 """
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 __author__ = "XCrane"

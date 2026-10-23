@@ -12,7 +12,6 @@ import json
 import os
 import platform
 import subprocess
-import sys
 
 
 def sha256(path):
