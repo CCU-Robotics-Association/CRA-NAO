@@ -40,6 +40,7 @@ sh build_unix.sh
 构建程序将检查打包后的 Python、SDK 与 Tk，并生成 `release/NAO_Toolbox-<版本>-<系统>-x86_64.tar.gz`。检查失败时不生成发布包。
 
 Linux 无图形会话的构建环境需安装 Xvfb，并通过 `xvfb-run -a sh build_unix.sh` 执行。运行成品仍需图形桌面及系统桌面库。
+中文界面需要系统具备中文字体；Ubuntu 可安装 `fonts-noto-cjk`。
 
 仓库根目录的 GitHub Actions 工作流分别使用 Ubuntu 22.04 与 Intel macOS 15 构建，下载厂家 SDK 和独立 Python 2.7 环境。`packaging/github-native-build.yml` 保留工作流模板。
 

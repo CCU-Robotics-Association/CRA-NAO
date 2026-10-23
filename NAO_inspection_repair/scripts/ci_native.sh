@@ -13,16 +13,21 @@ case "$(uname -s)" in
     SDK=pynaoqi-python2.7-2.8.6.23-linux64-20191127_152327
     ;;
   Darwin)
-    INSTALLER=Miniconda2-py27_4.8.3-MacOSX-x86_64.sh
     SDK=pynaoqi-python2.7-2.8.6.23-mac64-20191127_144231
     ;;
   *) printf '%s\n' 'Unsupported build platform' >&2; exit 2 ;;
 esac
-curl --fail --location --retry 3 "https://repo.anaconda.com/miniconda/$INSTALLER" -o "$BUILD_ROOT/miniconda.sh"
-bash "$BUILD_ROOT/miniconda.sh" -b -p "$BUILD_ROOT/python27"
+if [ "$(uname -s)" = Darwin ]; then
+  curl --fail --location --retry 3 'https://www.python.org/ftp/python/2.7.18/python-2.7.18-macosx10.9.pkg' -o "$BUILD_ROOT/python27.pkg"
+  sudo installer -pkg "$BUILD_ROOT/python27.pkg" -target /
+  export PYTHON_EXE=/Library/Frameworks/Python.framework/Versions/2.7/bin/python2.7
+else
+  curl --fail --location --retry 3 "https://repo.anaconda.com/miniconda/$INSTALLER" -o "$BUILD_ROOT/miniconda.sh"
+  bash "$BUILD_ROOT/miniconda.sh" -b -p "$BUILD_ROOT/python27"
+  export PYTHON_EXE="$BUILD_ROOT/python27/bin/python"
+fi
 curl --fail --location --retry 3 "https://community-static.aldebaran.com/resources/2.8.6/$SDK.tar.gz" -o "$BUILD_ROOT/sdk.tar.gz"
 tar -xzf "$BUILD_ROOT/sdk.tar.gz" -C "$BUILD_ROOT"
-export PYTHON_EXE="$BUILD_ROOT/python27/bin/python"
 export PYNAOQI_SDK="$BUILD_ROOT/$SDK"
 export PYTHONNOUSERSITE=1
 export PYTHONDONTWRITEBYTECODE=1

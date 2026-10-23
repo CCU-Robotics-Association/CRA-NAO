@@ -8,6 +8,21 @@
 import os
 import re
 import sys
+import subprocess
+
+# PyInstaller 3.6 无法解析新版 ldconfig 输出末尾的说明行。
+if sys.platform.startswith("linux"):
+    from distutils.spawn import find_executable
+    from PyInstaller.depend import utils as dependency_utils
+    cache = {}
+    ldconfig = find_executable("ldconfig") or find_executable("ldconfig", "/sbin:/usr/sbin")
+    if ldconfig:
+        output = subprocess.check_output([ldconfig, "-p"]).decode("utf-8", "replace")
+        for line in output.splitlines():
+            match = re.match(r"^\s+(\S+)\s+\([^)]*\)\s+=>\s+(\S+)", line)
+            if match:
+                cache.setdefault(match.group(1), match.group(2))
+    dependency_utils.LDCONFIG_CACHE = cache
 
 block_cipher = None
 project_dir = os.path.abspath(SPECPATH)

@@ -22,6 +22,7 @@ def main():
         raise RuntimeError("The legacy NAOqi SDK requires an x86_64 build environment.")
     project = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     env = environment()
+    subprocess.check_call([sys.executable, "-c", "import naoqi, qi; print('Source SDK import OK')"], env=env)
     subprocess.check_call([sys.executable, "-B", "-m", "PyInstaller", "--noconfirm",
                            os.path.join(project, "nao_toolbox.spec")], cwd=project, env=env)
     sys.path.insert(0, project)
@@ -37,7 +38,12 @@ def main():
                 "TCL_LIBRARY", "TK_LIBRARY", "CONDA_PREFIX", "CONDA_DEFAULT_ENV"):
         clean_env.pop(key, None)
     clean_env["PATH"] = "/usr/bin:/bin:/usr/sbin:/sbin"
-    subprocess.check_call([executable, "--check-runtime", report], env=clean_env, cwd=project)
+    status = subprocess.call([executable, "--check-runtime", report], env=clean_env, cwd=project)
+    if status != 0:
+        if os.path.isfile(report):
+            with open(report, "rb") as handle:
+                print(handle.read())
+        raise RuntimeError("Bundled runtime failed with exit code %s" % status)
     with open(report, "rb") as handle:
         result = json.load(handle)
     if not result.get("ok") or not result.get("frozen") or "_MEI" not in result.get("sdk", ""):
