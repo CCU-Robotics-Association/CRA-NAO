@@ -31,6 +31,23 @@ def main():
     artifact = "NAO_Toolbox.app" if mac else "NAO_Toolbox"
     dist = os.path.join(project, "dist", artifact)
     executable = os.path.join(dist, "Contents", "MacOS", "NAO_Toolbox") if mac else dist
+    if mac:
+        magic = (b"\xfe\xed\xfa\xce", b"\xce\xfa\xed\xfe", b"\xfe\xed\xfa\xcf",
+                 b"\xcf\xfa\xed\xfe", b"\xca\xfe\xba\xbe", b"\xbe\xba\xfe\xca")
+        signed = set()
+        for directory, _subdirs, filenames in os.walk(dist):
+            for filename in filenames:
+                path = os.path.realpath(os.path.join(directory, filename))
+                if not path.startswith(os.path.realpath(dist) + os.sep):
+                    raise RuntimeError("Unexpected external bundle link: %s" % path)
+                if path in signed or not os.path.isfile(path):
+                    continue
+                with open(path, "rb") as handle:
+                    macho = handle.read(4) in magic
+                if macho:
+                    subprocess.check_call(["/usr/bin/codesign", "--force", "--sign", "-", path])
+                    signed.add(path)
+        subprocess.check_call(["/usr/bin/codesign", "--force", "--deep", "--sign", "-", dist])
     report = os.path.join(project, "build", "native-runtime-check.json")
     clean_env = dict(os.environ)
     for key in ("PYTHONPATH", "PYTHONHOME", "PYNAOQI_SDK", "QI_SDK_PREFIX",
@@ -46,7 +63,10 @@ def main():
         raise RuntimeError("Bundled runtime failed with exit code %s" % status)
     with open(report, "rb") as handle:
         result = json.load(handle)
-    if not result.get("ok") or not result.get("frozen") or "_MEI" not in result.get("sdk", ""):
+    sdk_path = os.path.realpath(result.get("sdk", ""))
+    local_sdk = (sdk_path.startswith(os.path.realpath(dist) + os.sep) if mac
+                 else "_MEI" in sdk_path)
+    if not result.get("ok") or not result.get("frozen") or not local_sdk:
         raise RuntimeError("The bundled runtime check failed: %s" % report)
     name = "NAO_Toolbox-%s-%s-x86_64" % (__version__, "macos" if mac else "linux")
     release = os.path.join(project, "release")

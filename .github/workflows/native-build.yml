@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install Linux desktop dependencies
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y xvfb xauth libx11-6 libxext6 libxrender1 libxft2 libfontconfig1 fonts-noto-cjk
+        run: sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 update && sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 install -y xvfb xauth libx11-6 libxext6 libxrender1 libxft2 libfontconfig1
       - name: Build and verify bundled runtime
         working-directory: NAO_inspection_repair
         run: bash scripts/ci_native.sh

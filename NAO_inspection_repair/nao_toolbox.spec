@@ -82,22 +82,15 @@ a = Analysis(
     cipher=block_cipher,
 )
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
-exe = EXE(
-    pyz,
-    a.scripts,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
-    [],
-    name="NAO_Toolbox",
-    debug=False,
-    bootloader_ignore_signals=False,
-    strip=False,
-    upx=False,
-    runtime_tmpdir=None,
-    console=False,
-)
 if sys.platform == "darwin":
-    app = BUNDLE(exe, name="NAO_Toolbox.app",
+    executable = EXE(pyz, a.scripts, [], exclude_binaries=True,
+                     name="NAO_Toolbox", debug=False, strip=False, upx=False, console=False)
+    collected = COLLECT(executable, a.binaries, a.zipfiles, a.datas,
+                        name="NAO_Toolbox", strip=False, upx=False)
+    app = BUNDLE(collected, name="NAO_Toolbox.app",
                  bundle_identifier="org.ccu-robotics.nao-toolbox",
                  info_plist={"NSHighResolutionCapable": True})
+else:
+    exe = EXE(pyz, a.scripts, a.binaries, a.zipfiles, a.datas, [],
+              name="NAO_Toolbox", debug=False, bootloader_ignore_signals=False,
+              strip=False, upx=False, runtime_tmpdir=None, console=False)
