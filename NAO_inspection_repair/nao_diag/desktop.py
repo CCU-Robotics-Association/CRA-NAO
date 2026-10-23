@@ -47,5 +47,5 @@ def desktop_font(root, monospaced=False):
         fallback = "TkDefaultFont"
     family = next((name for name in candidates if name in available), None)
     if family is None:
-        family = font.nametofont(fallback, root=root).actual("family")
+        family = root.tk.call("font", "actual", fallback, "-family")
     return (family, 11 if sys.platform == "darwin" else 9)
