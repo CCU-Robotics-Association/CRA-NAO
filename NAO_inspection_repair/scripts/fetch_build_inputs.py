@@ -50,8 +50,14 @@ def validate_input(item):
 
 
 def verify_file(path, item):
-    if path.stat().st_size != item["size"] or file_digest(path) != item["sha256"]:
-        raise ValueError("Build input verification failed: " + item["filename"])
+    size = path.stat().st_size
+    if size != item["size"]:
+        raise ValueError("Build input size mismatch: %s; expected %s, received %s" %
+                         (item["filename"], item["size"], size))
+    digest = file_digest(path)
+    if digest != item["sha256"]:
+        raise ValueError("Build input SHA256 mismatch: %s; expected %s, received %s" %
+                         (item["filename"], item["sha256"], digest))
 
 
 def fetch(item, destination):

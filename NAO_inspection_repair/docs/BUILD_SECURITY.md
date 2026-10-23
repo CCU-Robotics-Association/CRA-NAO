@@ -22,7 +22,7 @@ Python 包使用 `packaging/requirements-bootstrap.lock` 和 `requirements-build
 
 工作流只允许手动触发。所有引用的 Actions 固定到完整提交 SHA；检出后不保留 Git 凭据。构建任务只有仓库只读权限，不持有发布或签名证书。
 
-两个平台的构建与内置组件自检都通过后，独立任务才使用 GitHub OIDC 生成构建来源证明。该任务不执行项目构建脚本，只下载本轮构建产物并证明其摘要；写权限仅为 `attestations: write`，不是仓库内容写权限。
+两个平台的构建与内置组件自检都通过后，独立任务才使用 GitHub OIDC 生成构建来源证明，并使用 GitHub CLI 逐项核验仓库、工作流、main 分支及本次提交身份。该任务不执行项目构建脚本，只下载本轮构建产物并证明其摘要；写权限仅为 `attestations: write`，不是仓库内容写权限。
 
 每个压缩包附带 `.sha256` 和 `.build.json`。后者记录提交、平台、工具版本、锁文件摘要及已校验的输入。来源证明同时覆盖压缩包与这两个附件。Actions 中的 `NAO-build-provenance` 保存证明包。
 

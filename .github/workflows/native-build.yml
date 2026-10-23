@@ -76,6 +76,16 @@ jobs:
             packages/**/release/*.tar.gz
             packages/**/release/*.tar.gz.sha256
             packages/**/release/*.tar.gz.build.json
+      - name: Verify provenance identity and source commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          find packages -type f \( -name '*.tar.gz' -o -name '*.tar.gz.sha256' -o -name '*.tar.gz.build.json' \) -print0 |
+          while IFS= read -r -d '' artifact; do
+            gh attestation verify "$artifact" --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/native-build.yml" \
+              --source-ref "$GITHUB_REF" --source-digest "$GITHUB_SHA" --deny-self-hosted-runners
+          done
       - name: Upload provenance bundle
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
