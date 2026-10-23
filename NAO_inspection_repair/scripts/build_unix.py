@@ -42,6 +42,8 @@ def main():
                     raise RuntimeError("Unexpected external bundle link: %s" % path)
                 if path in signed or not os.path.isfile(path):
                     continue
+                if path == os.path.realpath(executable):
+                    continue
                 with open(path, "rb") as handle:
                     macho = handle.read(4) in magic
                 if macho:

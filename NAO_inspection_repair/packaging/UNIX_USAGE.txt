@@ -4,7 +4,8 @@
 
 Extract the complete archive before starting the application.
 Linux: run ./NAO_Toolbox from a graphical desktop session.
-macOS: open NAO_Toolbox.app. The package is unsigned and built for Intel x86_64.
+macOS: open NAO_Toolbox.app. The package is built for Intel x86_64.
+It uses an ad-hoc signature, without a Developer ID signature or Apple notarization.
 Apple Silicon is not a native build target of the legacy NAOqi 2.8 SDK.
 Rosetta execution on Apple Silicon has not been verified.
 
