@@ -1,0 +1,38 @@
+{
+  "_metadata": {
+    "project": "NAO Robot Inspection Toolbox",
+    "description": "Pinned native build inputs; SDK digests are a reviewed HTTPS download baseline, not vendor signatures",
+    "author": "XCrane",
+    "recorded_on": "2026-10-23"
+  },
+  "platforms": {
+    "linux": [
+      {
+        "filename": "miniconda.sh",
+        "url": "https://repo.anaconda.com/miniconda/Miniconda2-py27_4.8.3-Linux-x86_64.sh",
+        "size": 51093759,
+        "sha256": "b820dde1a0ba868c4c948fe6ace7300a252b33b5befd078a15d4a017476b8979"
+      },
+      {
+        "filename": "sdk.tar.gz",
+        "url": "https://community-static.aldebaran.com/resources/2.8.6/pynaoqi-python2.7-2.8.6.23-linux64-20191127_152327.tar.gz",
+        "size": 208948505,
+        "sha256": "9efa858af68a36fda05504ce553ec595a5b75af2e7b7279b52255f2c374dc60f"
+      }
+    ],
+    "macos": [
+      {
+        "filename": "python27.pkg",
+        "url": "https://www.python.org/ftp/python/2.7.18/python-2.7.18-macosx10.9.pkg",
+        "size": 24889285,
+        "sha256": "fb15df7bcde0c03025ce236aec596f250daea55ed57f15445d1d4c9a5d2bdda4"
+      },
+      {
+        "filename": "sdk.tar.gz",
+        "url": "https://community-static.aldebaran.com/resources/2.8.6/pynaoqi-python2.7-2.8.6.23-mac64-20191127_144231.tar.gz",
+        "size": 643986472,
+        "sha256": "e0d7211aea2dd876df9f371a65d19501e45b3346850b97753d10bae0da80ffd8"
+      }
+    ]
+  }
+}

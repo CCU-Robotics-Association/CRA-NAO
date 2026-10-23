@@ -8,7 +8,8 @@
 param(
     [string]$PythonExe,
     [string]$SdkRoot,
-    [switch]$Clean
+    [switch]$Clean,
+    [switch]$RequireSignature
 )
 
 $ErrorActionPreference = 'Stop'
@@ -21,6 +22,11 @@ $env:PYTHONDONTWRITEBYTECODE = '1'
 
 $python = Find-Python27 -Explicit $PythonExe
 if (-not $python) { throw 'Compatible Python 2.7 was not found. Use -PythonExe.' }
+
+& $python -B (Join-Path $PSScriptRoot 'scripts\build_metadata.py')
+if ($LASTEXITCODE -ne 0) {
+    throw 'Build tools differ from the lock files. Install packaging/requirements-bootstrap.lock and requirements-build.txt in a dedicated build environment.'
+}
 
 $sdkLib = Find-SdkLib -Explicit $SdkRoot -PythonExe $python
 if (-not $sdkLib) { throw 'pynaoqi SDK was not found. Use -SdkRoot.' }
@@ -76,6 +82,11 @@ if (-not $runtime.ok -or -not $runtime.frozen) {
 Write-Host 'Packaged Python, NAOqi SDK and Tkinter checks passed.'
 Write-Host ("Build complete: " + $executable)
 Write-Host 'The bundled NAOqi SDK is large, so one-file startup may take a while.'
+$signature = Get-AuthenticodeSignature -FilePath $executable
+if ($signature.Status -ne 'Valid') {
+    if ($RequireSignature) { throw 'A trusted Authenticode signature is required. No release archive was created.' }
+    Write-Warning 'This executable has no trusted Authenticode signature. SHA256 metadata does not replace publisher signing.'
+}
 
 $releaseRoot = Join-Path $PSScriptRoot 'release'
 $versionSource = [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'nao_diag\__init__.py'))
@@ -86,10 +97,12 @@ $packageDir = Join-Path $releaseRoot $releaseName
 New-Item -ItemType Directory -Path $packageDir -Force | Out-Null
 Copy-Item -LiteralPath $executable -Destination (Join-Path $packageDir 'NAO_Toolbox.exe') -Force
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'config.example.json') -Destination $packageDir -Force
-$usageFile = Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'packaging') -Filter '*.txt' -File | Select-Object -First 1
-if (-not $usageFile) { throw 'The release usage document is missing.' }
-Copy-Item -LiteralPath $usageFile.FullName -Destination $packageDir -Force
+$usageFile = Join-Path $PSScriptRoot 'packaging\使用说明.txt'
+if (-not (Test-Path -LiteralPath $usageFile -PathType Leaf)) { throw 'The release usage document is missing.' }
+Copy-Item -LiteralPath $usageFile -Destination $packageDir -Force
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'docs') -Destination $packageDir -Recurse -Force
 $archive = Join-Path $releaseRoot ($releaseName + '.zip')
 Compress-Archive -LiteralPath $packageDir -DestinationPath $archive -Force
+& $python -B (Join-Path $PSScriptRoot 'scripts\build_metadata.py') --archive $archive --signing ($signature.Status.ToString())
+if ($LASTEXITCODE -ne 0) { throw 'Release metadata generation failed; do not publish this archive.' }
 Write-Host ('Release package: ' + $archive)

@@ -33,11 +33,13 @@ Mac 也提供 `run_gui.command`。从 Finder 启动时，需要先配置好 SDK 
 在目标系统中设置上述环境变量，再执行：
 
 ```sh
-"$PYTHON_EXE" -m pip install 'PyInstaller==3.6'
+"$PYTHON_EXE" -m pip --isolated install --require-hashes --no-deps -r packaging/requirements-bootstrap.lock
+"$PYTHON_EXE" -m pip --isolated install --require-hashes --no-deps --no-build-isolation --no-use-pep517 -r requirements-build.txt
 sh build_unix.sh
 ```
 
 构建程序将检查打包后的 Python、SDK 与 Tk，并生成 `release/NAO_Toolbox-<版本>-<系统>-x86_64.tar.gz`。检查失败时不生成发布包。
+每个压缩包同时生成 `.sha256` 和 `.build.json`，记录摘要、实际构建工具版本和来源提交。发布前的校验步骤见 [构建与发布校验](BUILD_SECURITY.md)。
 
 Linux 无图形会话的构建环境需安装 Xvfb，并通过 `xvfb-run -a sh build_unix.sh` 执行。运行成品仍需图形桌面及系统桌面库。
 中文界面需要系统具备中文字体；Ubuntu 可安装 `fonts-noto-cjk`。

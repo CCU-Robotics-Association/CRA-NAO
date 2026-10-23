@@ -6,6 +6,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: native-build-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   native:
     name: Native build (${{ matrix.platform }})
@@ -20,7 +23,9 @@ jobs:
           - platform: macos-x86_64
             runner: macos-15-intel
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install Linux desktop dependencies
         if: runner.os == 'Linux'
         run: sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 update && sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 install -y xvfb xauth libx11-6 libxext6 libxrender1 libxft2 libfontconfig1
@@ -28,19 +33,52 @@ jobs:
         working-directory: NAO_inspection_repair
         run: bash scripts/ci_native.sh
       - name: Upload verified package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: NAO-Toolbox-${{ matrix.platform }}
           path: |
             NAO_inspection_repair/release/*.tar.gz
+            NAO_inspection_repair/release/*.tar.gz.sha256
+            NAO_inspection_repair/release/*.tar.gz.build.json
             NAO_inspection_repair/build/native-runtime-check.json
+            NAO_inspection_repair/build/verified-inputs.json
           if-no-files-found: error
+          compression-level: 0
       - name: Upload build diagnostics
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: build-diagnostics-${{ matrix.platform }}
           path: |
             NAO_inspection_repair/build/native-runtime-check.json
             NAO_inspection_repair/build/nao_toolbox/warn-*.txt
           if-no-files-found: ignore
+  provenance:
+    name: Attest verified packages
+    needs: native
+    if: github.repository == 'CCU-Robotics-Association/CRA-NAO' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: NAO-Toolbox-*
+          path: packages
+      - name: Generate signed build provenance
+        id: attest
+        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3.0.0
+        with:
+          subject-path: |
+            packages/**/release/*.tar.gz
+            packages/**/release/*.tar.gz.sha256
+            packages/**/release/*.tar.gz.build.json
+      - name: Upload provenance bundle
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: NAO-build-provenance
+          path: ${{ steps.attest.outputs.bundle-path }}
+          if-no-files-found: error

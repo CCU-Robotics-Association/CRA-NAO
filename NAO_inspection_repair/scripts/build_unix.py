@@ -13,6 +13,7 @@ import subprocess
 import sys
 import tarfile
 from unix_runtime import environment
+from build_metadata import verify_tools, write_manifest
 
 
 def main():
@@ -21,6 +22,7 @@ def main():
     if platform.machine().lower() not in ("x86_64", "amd64"):
         raise RuntimeError("The legacy NAOqi SDK requires an x86_64 build environment.")
     project = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    tools = verify_tools(project)
     env = environment()
     subprocess.check_call([sys.executable, "-c", "import naoqi, qi; print('Source SDK import OK')"], env=env)
     subprocess.check_call([sys.executable, "-B", "-m", "PyInstaller", "--noconfirm",
@@ -81,6 +83,7 @@ def main():
         archive.add(os.path.join(project, "config.example.json"), arcname=name + "/config.example.json")
         archive.add(os.path.join(project, "docs"), arcname=name + "/docs")
         archive.add(os.path.join(project, "packaging", "UNIX_USAGE.txt"), arcname=name + "/USAGE.txt")
+    write_manifest(project, archive_path, tools, "ad-hoc" if mac else "unsigned")
     print("Native runtime check passed. Package: %s" % archive_path)
 
 
