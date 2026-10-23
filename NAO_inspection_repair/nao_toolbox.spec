@@ -58,7 +58,10 @@ for directory, subdirectories, filenames in os.walk(sdk_library_dir):
                          if not name.endswith(".dSYM") and name not in ("__pycache__", "cmake")]
     for name in filenames:
         if include_sdk_binary(name):
-            destination = os.path.relpath(directory, sdk_library_dir)
+            if os.path.normcase(os.path.abspath(directory)) == os.path.normcase(sdk_dir):
+                destination = "."
+            else:
+                destination = os.path.relpath(directory, sdk_library_dir)
             sdk_binaries.append((os.path.join(directory, name), destination))
 
 a = Analysis(
@@ -83,13 +86,17 @@ a = Analysis(
 )
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 if sys.platform == "darwin":
+    with open(os.path.join(project_dir, "nao_diag", "__init__.py"), "rb") as handle:
+        version = re.search(br'__version__\s*=\s*"([^"]+)"', handle.read()).group(1).decode("ascii")
     executable = EXE(pyz, a.scripts, [], exclude_binaries=True,
                      name="NAO_Toolbox", debug=False, strip=False, upx=False, console=False)
     collected = COLLECT(executable, a.binaries, a.zipfiles, a.datas,
                         name="NAO_Toolbox", strip=False, upx=False)
     app = BUNDLE(collected, name="NAO_Toolbox.app",
+                 version=version,
                  bundle_identifier="org.ccu-robotics.nao-toolbox",
-                 info_plist={"NSHighResolutionCapable": True})
+                 info_plist={"NSHighResolutionCapable": True,
+                             "CFBundleExecutable": "NAO_Toolbox"})
 else:
     exe = EXE(pyz, a.scripts, a.binaries, a.zipfiles, a.datas, [],
               name="NAO_Toolbox", debug=False, bootloader_ignore_signals=False,

@@ -49,7 +49,8 @@ def main():
                 if macho:
                     subprocess.check_call(["/usr/bin/codesign", "--force", "--sign", "-", path])
                     signed.add(path)
-        subprocess.check_call(["/usr/bin/codesign", "--force", "--deep", "--sign", "-", dist])
+        subprocess.check_call(["/usr/bin/codesign", "--force", "--sign", "-", dist])
+        subprocess.check_call(["/usr/bin/codesign", "--verify", "--deep", "--strict", dist])
     report = os.path.join(project, "build", "native-runtime-check.json")
     clean_env = dict(os.environ)
     for key in ("PYTHONPATH", "PYTHONHOME", "PYNAOQI_SDK", "QI_SDK_PREFIX",
