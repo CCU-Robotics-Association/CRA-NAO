@@ -97,9 +97,10 @@ $packageDir = Join-Path $releaseRoot $releaseName
 New-Item -ItemType Directory -Path $packageDir -Force | Out-Null
 Copy-Item -LiteralPath $executable -Destination (Join-Path $packageDir 'NAO_Toolbox.exe') -Force
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'config.example.json') -Destination $packageDir -Force
-$usageFile = Join-Path $PSScriptRoot 'packaging\使用说明.txt'
-if (-not (Test-Path -LiteralPath $usageFile -PathType Leaf)) { throw 'The release usage document is missing.' }
-Copy-Item -LiteralPath $usageFile -Destination $packageDir -Force
+$usageFiles = @(Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'packaging') -Filter '*.txt' -File |
+    Where-Object { $_.Name -ne 'UNIX_USAGE.txt' })
+if ($usageFiles.Count -ne 1) { throw 'Exactly one Windows release usage document is required.' }
+Copy-Item -LiteralPath $usageFiles[0].FullName -Destination $packageDir -Force
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'docs') -Destination $packageDir -Recurse -Force
 $archive = Join-Path $releaseRoot ($releaseName + '.zip')
 Compress-Archive -LiteralPath $packageDir -DestinationPath $archive -Force
