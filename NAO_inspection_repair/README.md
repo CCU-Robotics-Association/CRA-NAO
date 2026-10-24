@@ -26,7 +26,7 @@ Edited：**XCrane**
 
 [项目简介](#overview) · [EXE 使用](#quick-start) · [验收模式](#profiles) ·
 [检测范围](#coverage) · [报告与日志](#reports) ·
-[源码运行](#source) · [打包发布](#build) · [常见问题](#faq)
+[源码运行](#source) · [打包发布](#build)
 
 </div>
 
